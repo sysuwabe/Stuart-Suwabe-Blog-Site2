@@ -1,0 +1,7 @@
+"0","food2_week30[is.na(food2_week30)] = ""T1"""
+"0","food2_week30 <- row_to_names(food2_week30, row_number = 5) %>% clean_names()"
+"2","Row 5 does not provide unique names. Consider running clean_names() after row_to_names()."
+"0","names(food2_week30)[names(food2_week30) == ""t1""] <- ""Free Groceries or Meals?"""
+"0","names(food2_week30)[names(food2_week30) == ""t1_2""] <- ""Total"""
+"0","week30 <- food2_week30 %>% slice(128:130)"
+"0","View(week30)"

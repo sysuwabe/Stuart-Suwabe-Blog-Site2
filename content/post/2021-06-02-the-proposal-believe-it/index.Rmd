@@ -1,0 +1,11 @@
+---
+title: 'The Proposal: Believe It!'
+author: R package build
+date: '2021-06-02'
+categories:
+  - R
+tags:
+  - R Markdown
+slug: the-proposal-believe-it
+---
+
