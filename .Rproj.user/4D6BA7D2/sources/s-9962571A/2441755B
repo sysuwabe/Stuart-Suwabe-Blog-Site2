@@ -1,0 +1,32 @@
+{
+    "id": "2441755B",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1623881957221.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "expression": "foodin",
+        "caption": "foodin",
+        "totalObservations": 3142,
+        "displayedObservations": 3142,
+        "variables": 18,
+        "cacheKey": "7EF89DEC",
+        "object": "foodin",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=foodin&cache_key=7EF89DEC&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 140356143882912,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1623881957221,
+    "read_only": false,
+    "read_only_alternatives": []
+}

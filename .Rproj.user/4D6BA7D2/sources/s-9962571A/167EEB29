@@ -1,0 +1,32 @@
+{
+    "id": "167EEB29",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1623881258649.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "expression": "MMG2021_2019Data_ToShare",
+        "caption": "MMG2021_2019Data_ToShare",
+        "totalObservations": 19,
+        "displayedObservations": 19,
+        "variables": 5,
+        "cacheKey": "82300D91",
+        "object": "MMG2021_2019Data_ToShare",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=MMG2021_2019Data_ToShare&cache_key=82300D91&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 0,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1623881258649,
+    "read_only": false,
+    "read_only_alternatives": []
+}
