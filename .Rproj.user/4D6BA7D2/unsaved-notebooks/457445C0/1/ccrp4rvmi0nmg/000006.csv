@@ -1,0 +1,21 @@
+"0","EduHSGrad <- get_acs(geography = ""county"", variables = ""B06009_003"", state = ""CA"", year = 2019)
+"
+"2","Getting data from the 2015-2019 5-year ACS
+"
+"2","Using FIPS code '06' for state 'CA'
+"
+"0","EduHSGrad1 <- EduHSGrad %>% rename(county = NAME, EduHSGrad = estimate) %>% select(county, EduHSGrad)"
+"0",""
+"0","EduSomeCol <- get_acs(geography = ""county"", variables = ""B06009_004"", state = ""CA"", year = 2019)"
+"2","Getting data from the 2015-2019 5-year ACS
+"
+"2","Using FIPS code '06' for state 'CA'
+"
+"0","EduSomeCol1 <- EduSomeCol %>% rename(county = NAME, EduSomeCol = estimate) %>% select(county, EduSomeCol)"
+"0",""
+"0","EduBach <- get_acs(geography = ""county"", variables = ""B06009_005"", state = ""CA"", year = 2019)"
+"2","Getting data from the 2015-2019 5-year ACS
+"
+"2","Using FIPS code '06' for state 'CA'
+"
+"0","EduBach1 <- EduBach %>% rename(county = NAME, EduBach = estimate) %>% select(county, EduBach)"

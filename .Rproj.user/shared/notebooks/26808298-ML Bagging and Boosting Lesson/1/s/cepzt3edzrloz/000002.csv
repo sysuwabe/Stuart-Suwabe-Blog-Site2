@@ -1,0 +1,7 @@
+"0","ggplot(wine_results, aes(x = lprice, y = .pred)) + "
+"0","  # Create a diagonal line:"
+"0","  geom_abline(lty = 2) + "
+"0","  geom_point(alpha = 0.5) + "
+"0","  labs(y = ""Predicted log Sale Price"", x = ""log Sale Price"") +"
+"0","  # Scale and size the x- and y-axis uniformly:"
+"0","  coord_obs_pred()"

@@ -1,0 +1,2 @@
+"0","food_pred <- predict(food_fit, test %>% select(-insecure_percen.x)) "
+"0","head(food_pred)"

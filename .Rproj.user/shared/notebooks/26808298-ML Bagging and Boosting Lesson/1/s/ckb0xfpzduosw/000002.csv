@@ -1,0 +1,4 @@
+"0","set.seed(504)"
+"0","data_split <- initial_split(wine, prop = 3/4)"
+"0","train <- training(data_split)"
+"0","test  <- testing(data_split)"

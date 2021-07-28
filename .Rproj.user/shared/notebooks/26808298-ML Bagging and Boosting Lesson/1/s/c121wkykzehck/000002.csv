@@ -1,0 +1,6 @@
+"0","autoplot("
+"0","   grid_results,"
+"0","   rank_metric = ""rmse"",  # <- how to order models"
+"0","   metric = ""rmse"",       # <- which metric to visualize"
+"0","   select_best = TRUE     # <- one point per workflow"
+"0",")"

@@ -1,0 +1,2 @@
+"0","wine_metrics <- metric_set(rmse, rsq, mae)"
+"0","wine_metrics(wine_results, truth = lprice, estimate = .pred)"

@@ -1,0 +1,125 @@
+---
+title: "Untitled"
+author: "Stuart Suwabe"
+date: "7/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(tidyverse)
+
+x19 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2021_2019Data_ToShare.xlsx", sheet = "2019 County")
+x19 <- x19 %>% rename(insecure_percen = `2019 Food Insecurity Rate`)
+
+x18 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2020_2018Data_ToShare.xlsx", sheet = "2018 County")
+names(x18) <- x18 %>% slice(1) %>% unlist()
+x18 <- x18 %>% slice(-1)
+x18 <- x18 %>% rename(insecure_percen = `2018 Food Insecurity Rate`)
+
+x17 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2019_2017Data_ToShare.xlsx", sheet = "2017 County")
+x17 <- x17 %>% rename(insecure_percen = `2017 Food Insecurity Rate`)
+
+x16 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2018_2016Data_ToShare.xlsx", sheet = "2016 County")
+x16 <- x16 %>% rename(insecure_percen = `2016 Food Insecurity Rate`)
+
+x15 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2017_2015Data_ToShare.xlsx", sheet = "2015 County")
+x15 <- x15 %>% rename(insecure_percen = `2015 Food Insecurity Rate`)
+
+x14 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2016_2014Data_ToShare.xlsx", sheet = "2014 County")
+x14 <- x14 %>% rename(insecure_percen = `2014 Food Insecurity Rate`)
+
+x13 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2015_2013Data_ToShare.xlsx", sheet = "2013 County")
+x13 <- x13 %>% rename(insecure_percen = `2013 Food Insecurity Rate`)
+
+x12 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2014_2012Data_ToShare.xlsx", sheet = "2012 County")
+x12 <- x12 %>% rename(insecure_percen = `2012 Food Insecurity Rate`)
+
+x11 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2013_2011Data_ToShare.xlsx", sheet = "2011 County")
+x11 <- x11 %>% rename(insecure_percen = `2011 Food Insecurity Rate`)
+
+x10 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2012_2010Data_ToShare.xlsx", sheet = "County")
+x10 <- x10 %>% rename(insecure_percen = `2010 Food Insecurity Rate`)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+x19 <- x19[c(1:4)] %>% filter(State == "CA")
+x19a <- x19 %>% filter(`County, State` == "Sacramento County, California")
+x19b <- x19 %>% filter(`County, State` == "Sutter County, California")
+x19c <- x19 %>% filter(`County, State` == "Los Angeles County, California")
+
+x18 <- x18[c(1:4)] %>% filter(State == "CA")
+x18a <- x18 %>% filter(`County, State` == "Sacramento County, California")
+x18b <- x18 %>% filter(`County, State` == "Sutter County, California")
+x18c <- x18 %>% filter(`County, State` == "Los Angeles County, California")
+
+x17 <- x17[c(1:4)] %>% filter(State == "CA") 
+x17a <- x17 %>% filter(`County, State` == "Sacramento County, California")
+x17b <- x17 %>% filter(`County, State` == "Sutter County, California")
+x17c <- x17 %>% filter(`County, State` == "Los Angeles County, California")
+
+x16 <- x16[c(1:4)] %>% filter(State == "CA") 
+x16a <- x16 %>% filter(`County, State` == "Sacramento County, California")
+x16b <- x16 %>% filter(`County, State` == "Sutter County, California")
+x16c <- x16 %>% filter(`County, State` == "Los Angeles County, California")
+
+x15 <- x15[c(1:4)] %>% filter(State == "CA") 
+x15a <- x15 %>% filter(`County, State` == "Sacramento County, California")
+x15b <- x15 %>% filter(`County, State` == "Sutter County, California")
+x15c <- x15 %>% filter(`County, State` == "Los Angeles County, California")
+
+x14 <- x14[c(1:4)] %>% filter(State == "CA")
+x14a <- x14 %>% filter(`County, State` == "Sacramento County, California")
+x14b <- x14 %>% filter(`County, State` == "Sutter County, California")
+x14c <- x14 %>% filter(`County, State` == "Los Angeles County, California")
+
+x13 <- x13[c(1:4)] %>% filter(State == "CA") 
+x13a <- x13 %>% filter(`County, State` == "Sacramento County, California")
+x13b <- x13 %>% filter(`County, State` == "Sutter County, California")
+x13c <- x13 %>% filter(`County, State` == "Los Angeles County, California")
+
+x12 <- x12[c(1:4)] %>% filter(State == "CA") 
+x12a <- x12 %>% filter(`County, State` == "Sacramento County, California")
+x12b <- x12 %>% filter(`County, State` == "Sutter County, California")
+x12c <- x12 %>% filter(`County, State` == "Los Angeles County, California")
+
+x11 <- x11[c(1:4)] %>% filter(State == "CA") 
+x11a <- x11 %>% filter(`County, State` == "Sacramento County, California")
+x11b <- x11 %>% filter(`County, State` == "Sutter County, California")
+x11c <- x11 %>% filter(`County, State` == "Los Angeles County, California")
+
+x10 <- x10[c(1:4)] %>% filter(State == "CA")
+x10a <- x10 %>% filter(`County, State` == "Sacramento County, California")
+x10b <- x10 %>% filter(`County, State` == "Sutter County, California")
+x10c <- x10 %>% filter(`County, State` == "Los Angeles County, California")
+
+SCfoodin <- rbind(x10a, x11a, x12a, x13a, x14a, x15a, x16a, x17a, x18a, x19a)
+STfoodin <- rbind(x10b, x11b, x12b, x13b, x14b, x15b, x16b, x17b, x18b, x19b)
+LAfoodin <- rbind(x10c, x11c, x12c, x13c, x14c, x15c, x16c, x17c, x18c, x19c)
+```
+
+
+```{r echo=FALSE}
+plot(SCfoodin$insecure_percen)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+x19$pantry_num <- c(20,20,15,49,15,6,54,8,12,41,8,16,13,17,30,28,38,7,30,10,11,3,10,8,4,11,30,9,10,95,33,9,41,37,6,111,39,30,42,42,12,53,25,13,11,5,5,25,16,30,14,3,4,21,11,190,60,12)
+
+View(x19)
+```
+
+
+
+
+

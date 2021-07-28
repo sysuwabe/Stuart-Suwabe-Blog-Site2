@@ -1,0 +1,8 @@
+"0",""
+"0","test_results %>% "
+"0","   collect_predictions() %>% "
+"0","   ggplot(aes(x = lprice, y = .pred)) + "
+"0","   geom_abline(col = ""green"", lty = 2) + "
+"0","   geom_point(alpha = 0.5) + "
+"0","   coord_obs_pred() + "
+"0","   labs(x = ""observed"", y = ""predicted"")"

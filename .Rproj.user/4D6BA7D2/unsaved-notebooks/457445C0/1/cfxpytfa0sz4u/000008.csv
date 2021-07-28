@@ -1,0 +1,4 @@
+"0","foodm1 <- predict(food_fit, test) %>%"
+"0","  bind_cols(test %>% select(insecure_percen.x))  "
+"0",""
+"0","foodm1 "

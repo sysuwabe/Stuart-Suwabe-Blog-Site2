@@ -1,0 +1,32 @@
+{
+    "id": "A9DA095D",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626915482062.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "expression": "foodintest",
+        "caption": "foodintest",
+        "totalObservations": 58,
+        "displayedObservations": 58,
+        "variables": 17,
+        "cacheKey": "BCA73B2D",
+        "object": "foodintest",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=foodintest&cache_key=BCA73B2D&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 4409988918,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626915482062,
+    "read_only": false,
+    "read_only_alternatives": []
+}

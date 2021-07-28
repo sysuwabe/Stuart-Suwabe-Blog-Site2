@@ -1,0 +1,2 @@
+"0","ggplot(foodin4, aes(insecure_num, population, color = region)) +"
+"0","  geom_point() + xlim(0, 300000) + ylim(0,2500000) + facet_wrap(~region)"

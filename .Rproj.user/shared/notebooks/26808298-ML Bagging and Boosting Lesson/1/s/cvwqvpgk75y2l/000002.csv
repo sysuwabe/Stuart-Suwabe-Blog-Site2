@@ -1,0 +1,2 @@
+"0","wine_results <- bind_cols(wine_pred, test %>% select(lprice))"
+"0","head(wine_results)"

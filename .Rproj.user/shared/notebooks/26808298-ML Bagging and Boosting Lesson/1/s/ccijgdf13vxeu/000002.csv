@@ -1,0 +1,8 @@
+"0","library(workflowsets)"
+"0",""
+"0","wine_workflows <- "
+"0","   workflow_set("
+"0","      preproc = list(basic = basic_rec, complicated = complicated_rec), "
+"0","      models = list(LM = lm_spec, DT = dt_spec)"
+"0","   )"
+"0","wine_workflows"

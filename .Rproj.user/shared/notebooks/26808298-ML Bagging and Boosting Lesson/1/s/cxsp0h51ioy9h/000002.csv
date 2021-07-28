@@ -1,0 +1,2 @@
+"0","wine_pred <- predict(wine_fit, test %>% select(-lprice)) "
+"0","head(wine_pred)"

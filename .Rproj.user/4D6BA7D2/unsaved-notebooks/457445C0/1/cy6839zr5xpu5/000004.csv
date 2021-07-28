@@ -1,0 +1,2 @@
+"0","vari <- load_variables(2019, ""acs5"", cache = TRUE)"
+"0","View(vari)"

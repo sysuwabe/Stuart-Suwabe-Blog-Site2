@@ -1,0 +1,7 @@
+"0","test_results <- "
+"0","   grid_results %>% "
+"0","   pull_workflow(""basic_DT"") %>% "
+"0","   finalize_workflow(best_results) %>% "
+"0","   last_fit(split = data_split)"
+"0",""
+"0","collect_metrics(test_results)"

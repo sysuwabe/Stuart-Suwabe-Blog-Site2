@@ -1,0 +1,2 @@
+"0","food_metrics <- metric_set(rmse, rsq, mae)"
+"0","food_metrics(food_results, truth = insecure_percen.x, estimate = .pred)"

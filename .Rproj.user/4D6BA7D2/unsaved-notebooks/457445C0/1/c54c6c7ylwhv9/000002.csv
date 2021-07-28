@@ -1,0 +1,2 @@
+"0","food_results <- bind_cols(food_pred, test %>% select(insecure_percen.x))"
+"0","head(food_results)"

@@ -1,0 +1,5 @@
+"0","wine_fit <- fit(wine_wflow, train)"
+"0",""
+"0","wine_fit %>% ## display results"
+"0","  pull_workflow_fit() %>% "
+"0","  tidy() "

@@ -1,0 +1,339 @@
+# Linear Regression and Model Fit
+
+# relationships between pairs and variables
+## correlation argument in summarize() can show correlations
+## regression: stat model to explore relationship response and explanatory variables have
+## given values of explanatory variables, you can predict values of response variable
+## response variable: dependent variable, what you want to predict
+## explanatory variable: independent variable, explains how response variable will change
+## linear regression: response variable is numeric
+## logistic regression: response variable is logical
+## simple linear/logistic regression: only one explanatory variable
+### visualize before you use a model
+## predicting prices is a common task, so its a good response variable
+
+# Draw a scatter plot of n_convenience vs. price_twd_msq
+ggplot(taiwan_real_estate, aes(n_convenience, price_twd_msq)) +
+  geom_point(alpha = 0.5) + # Make points 50% transparent
+  # Add a linear trend line without a confidence ribbon
+  geom_smooth(method = "lm", se = FALSE)
+
+# y (response) = intercept + slope * x(explanatory)
+## lm() runs linear regression model: response variable ~ explantory variable, data frame
+## gives two coefficients: intercept and slope of line
+
+# Run a linear regression of price_twd_msq vs. n_convenience
+lm(formula = price_twd_msq ~ n_convenience, data = taiwan_real_estate)
+## in relation with the data, 
+## the intercept coefficient means that a house with zero stores had a price of 8.22242 TWD per square meter
+## n_convenience means that if you increase number of stores by one, expected increase in price is 0.7981 TWD per square meter
+
+# categorical explanatory variable: 
+## for categorical data, use histogram, small bins for lesser data
+## coefficients for each category are calculated relative to intercept
+## useful for models with  multiple explanatory variables
+
+# Using taiwan_real_estate, plot price_twd_msq
+ggplot(taiwan_real_estate, aes(x = price_twd_msq)) +
+  # Make it a histogram with 10 bins
+  geom_histogram(bins = 10) +
+  # Facet the plot so each house age group gets its own panel
+  facet_wrap( ~ house_age_years)
+
+# good way to explore categorical variables is to calculate summary statistics such as mean
+summary_stats <- taiwan_real_estate %>% 
+  # Group by house age
+  group_by(house_age_years) %>% 
+  # Summarize to calculate the mean house price/area
+  summarise(mean_by_group = mean(price_twd_msq))
+# See the result
+summary_stats
+
+# Run a linear regression of price_twd_msq vs. house_age_years
+mdl_price_vs_age <- lm(formula = price_twd_msq ~ house_age_years, data = taiwan_real_estate)
+# See the result
+mdl_price_vs_age
+
+# Update the model formula to remove the intercept
+mdl_price_vs_age_no_intercept <- lm(
+  price_twd_msq ~ house_age_years + 0, 
+  data = taiwan_real_estate)
+# See the result
+mdl_price_vs_age_no_intercept
+
+
+# models can make predictions
+# If I set explanatory variables to some values, what value would the response variable have?
+## library(dplyr), ex_data <- tibble(length_cm = 20:40)
+## call predict() passing model object and data frame of explanatory variables
+## returns vector of predictions, put in data frame with mutate()
+## extrapolating: making predictions outside range of observed data
+
+# Create a tibble with n_convenience column from zero to ten
+explanatory_data <- tibble(
+  n_convenience = 0:10)
+# Use mdl_price_vs_conv to predict with explanatory_data
+predict(mdl_price_vs_conv, explanatory_data)
+
+# Edit this, so predictions are stored in prediction_data
+prediction_data <- explanatory_data %>% 
+  mutate(
+    price_twd_msq = predict(mdl_price_vs_conv, explanatory_data))
+# See the result
+prediction_data
+## prediction data has a column of explanatory variable values and column of response variable values
+## means you can plot on same scatterplot of response vs explanatory data values
+
+# Add to the plot
+ggplot(taiwan_real_estate, aes(n_convenience, price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  # Add a point layer of prediction data, colored yellow
+  geom_point(data = prediction_data, color = "yellow")
+## this could happen in real life. what about an impossible situation...
+
+# Define a tibble where n_convenience is -1
+minus_one <- tibble(n_convenience = -1)
+# Define a tibble where n_convenience is 2.5
+two_pt_five <- tibble(n_convenience = 2.5)
+## the model successfully gives prediction about cases that are impossible in real life
+## linear models don't know what's possible, so they can give preditions that do not make sense
+## understand what data means in order to determine whether a prediction is nonsense or not
+
+# model objects
+## coefficients(): returns named numeric vector of coefficients extracted from data
+## fitted(): gets predictions on OG data set used to create model (fitted values)
+## residuals(): gets measure of inaccuracy in model fit, one residual for each row of data set
+## residuals: actual response values minus predicted resonse values 
+## summary(): show extended printout of function
+### model's good fit: residuals median close to zero, 1st and 3rd quartiles around the same absolute value
+### p-values: statistical significance
+library(broom) # returns data frames
+## tidy() returns coefficient details in data frame
+## augment(): returns observation level results
+## glance(): returns model-level results
+
+# variable returned by lm() that contains model object has many elements
+# Get the model coefficients of mdl_price_vs_conv
+coefficients(mdl_price_vs_conv)
+# Get the fitted values of mdl_price_vs_conv
+fitted(mdl_price_vs_conv)
+# Get the residuals of mdl_price_vs_conv
+residuals(mdl_price_vs_conv)
+# Print a summary of mdl_price_vs_conv
+summary(mdl_price_vs_conv)
+
+# Manually calculate predictions from model coefficients instead of using predict()
+# predicted value is just intercept plus slope times explanatory variable
+# Get the coefficients of mdl_price_vs_conv
+coeffs <- coefficients(mdl_price_vs_conv)
+# Get the intercept
+intercept <- coeffs[1]
+# Get the slope
+slope <- coeffs[2]
+explanatory_data %>% 
+  mutate(
+    # Manually calculate the predictions
+    price_twd_msq = intercept + slope * n_convenience)
+# Compare to the results from predict()
+predict(mdl_price_vs_conv, explanatory_data)
+
+# programming tasks are easier with data in data frames
+# broom package contains funtions to decompose models into coefficient, observation, and model level elements
+# Get the coefficient-level elements of the model
+tidy(mdl_price_vs_conv)
+# Get the observation-level elements of the model
+augment(mdl_price_vs_conv)
+# Get the model-level elements of the model
+glance(mdl_price_vs_conv)
+
+# regression to the mean: property of the data with effect quantified by linear regression
+# response value = fitted value + residual, stuff you explained + stuff you could not
+# residuals exist due to problems in model and fundamental process, extreme cases are often b/c of randomness
+# extreme cases do not persist over time
+
+# In investing, positive return = increased value in investment, negative means lost value
+# Using sp500_yearly_returns, plot return_2019 vs. return_2018
+ggplot(sp500_yearly_returns, aes(x = return_2018, y = return_2019)) +
+  # Make it a scatter plot
+  geom_point() +
+  # Add a line at y = x, colored green, size 1
+  geom_abline(color = "green", size = 1) +
+  # Add a linear regression trend line, no std. error ribbon
+  geom_smooth(method = "lm", se = FALSE) +
+  # Fix the coordinate ratio
+  coord_fixed()
+## Pay attention: regression trend line looks very different to y = x line. be careful
+
+# Run a linear regression on return_2019 vs. return_2018 to quantify relationship between returns
+# using sp500_yearly_returns
+mdl_returns <- lm(formula = return_2019 ~ return_2018, 
+                  data = sp500_yearly_returns)
+# See the result
+mdl_returns
+
+# Create a data frame with return_2018 at -1, 0, and 1 
+explanatory_data <- tibble(return_2018 = c(-1, 0, 1))
+# Use mdl_returns to predict with explanatory_data
+predict(mdl_returns, explanatory_data)
+## for example, investments that gained a lot in 2018 gained only a small amount in 2019
+## also, investments that lost a lot in 2018 gained a small amount in 2019
+
+# transforming variables
+# I() applies exponentiation to variable
+## if person sees advert on Facebook, it's called an impression
+# sqrt() puts the variable through a square root
+
+# If there is no straight line relationship between response and explanatory variable, 
+# you could create one by transforming one or both variables
+# Run the code to see the plot
+ggplot(taiwan_real_estate, aes(dist_to_mrt_m, price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+# Edit so x-axis is square root of dist_to_mrt_m
+ggplot(taiwan_real_estate, aes(sqrt(dist_to_mrt_m), price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+# Run a linear regression of price_twd_msq vs. 
+# square root of dist_to_mrt_m using taiwan_real_estate
+mdl_price_vs_dist <- lm(formula = price_twd_msq ~ sqrt(dist_to_mrt_m), 
+                        data = taiwan_real_estate)
+# See the result
+mdl_price_vs_dist
+# Use this explanatory data
+explanatory_data <- tibble(
+  dist_to_mrt_m = seq(0, 80, 10) ^ 2)
+# Use mdl_price_vs_dist to predict explanatory_data
+prediction_data <- explanatory_data %>% 
+  mutate(price_twd_msq = predict(mdl_price_vs_dist, explanatory_data))
+# See the result
+prediction_data
+
+ggplot(taiwan_real_estate, aes(sqrt(dist_to_mrt_m), price_twd_msq)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  # Add points from prediction_data, colored green, size 5
+  geom_point(data = prediction_data, color = "green", size = 5)
+## pay attention: transform explanatory variable to make response variable linear
+
+# back transform predictions to undo transformation
+# Run the code to see the plot
+# Edit to raise x, y aesthetics to power 0.25
+ggplot(ad_conversion, aes(n_impressions ^ 0.25, n_clicks ^ 0.25)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+# Run a linear regression of n_clicks to the power 0.25 vs. 
+# n_impressions to the power 0.25 using ad_conversion
+mdl_click_vs_impression <- lm(formula = I(n_clicks ^ 0.25) ~ I(n_impressions ^ 0.25), 
+                              data = ad_conversion)
+# Use this explanatory data
+explanatory_data <- tibble(
+  n_impressions = seq(0, 3e6, 5e5))
+
+prediction_data <- explanatory_data %>% 
+  mutate(
+    # Use mdl_click_vs_impression to predict n_clicks ^ 0.25
+    n_clicks_025 = predict(mdl_click_vs_impression, explanatory_data),
+    # Back transform to get n_clicks
+    n_clicks = n_clicks_025 ^ 4)
+
+ggplot(ad_conversion, aes(n_impressions ^ 0.25, n_clicks ^ 0.25)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  # Add points from prediction_data, colored green
+  geom_point(data = prediction_data, color = "green")
+## when response variable is transformed you need to back transform predictions
+
+
+# Quantifying model fit
+## r-squared (linear regression), R-squared (more than one explanatory variable)
+## proportion of varianace in response variable that is predictable from explnatory variable
+### 1 = perfect fit, 0 = worst possible fit
+## sumamary() and glance() can extract this metric, pull() in dplyr can pull r-squared and other metrics
+## coefficient: correlation between explnatory and response variables, squared
+## residual standard error: typical difference between prediction and observed response
+### same unit as response variable
+## root-mean-square error: works similar to RSE, but is worse for model comparison
+
+# coefficient of determination is measure of how well linear regression line fits observed values
+# Print a summary of mdl_click_vs_impression_orig
+summary(mdl_click_vs_impression_orig) ## models n_clicks vs n_impressions
+# Print a summary of mdl_click_vs_impression_trans
+summary(mdl_click_vs_impression_trans) ## models n_clicks^0.25 vs n_impressions^0.25
+
+# Get coeff of determination for mdl_click_vs_impression_orig
+mdl_click_vs_impression_orig %>% 
+  # Get the model-level details
+  glance() %>% 
+  # Pull out r.squared
+  pull(r.squared)
+## r-squared is 0.89: number of impressions explains 89% of variabililty in number of clicks
+# Do the same for the transformed model
+mdl_click_vs_impression_trans %>% glance() %>% pull(r.squared)
+## higher r-squared means a better fit for the data, which is the transformed model
+
+# RSE measures typical size of residuals, measures how badly wrong you can expect predictions to be
+# Get RSE for mdl_click_vs_impression_orig
+mdl_click_vs_impression_orig %>% 
+  # Get the model-level details
+  glance() %>% 
+  # Pull out sigma
+  pull(sigma)
+## RSE is about 20: typical difference between observed number of clicks and predicted number of clicks
+# Do the same for the transformed model
+mdl_click_vs_impression_trans %>% glance() %>% pull(sigma)
+
+# visualizing model fit
+## hoped properties for residuals: normally distributed, mean of residuals is zero
+## LOESS trend lines are good for visualizing trends, not for predictions
+## Q-Q plot: shows whether or not residuals follow normal distribution
+### straight line = normally distributed
+## scale-location plot: shows whether residual size gets bigger or smaller
+library(ggfortify) ## you'll need the which argument in autoplot()
+
+# look at both above examples in residual vs fitted visualizations. transformed has residual line closer to zero
+# Q-Q plot shows straighter line, so transformed data is better
+# scale-location have residuals being consistent in point size in transformed model
+
+autoplot(mdl_price_vs_conv, which = 1) # residuals vs fitted values
+autoplot(mdl_price_vs_conv, which = 2) # Q-Q plot
+autoplot(mdl_price_vs_conv, which = 3) # scale-location
+# Plot the three diagnostics for mdl_price_vs_conv
+autoplot(mdl_price_vs_conv, which = 1:3, nrow = 3, ncol = 1)
+
+# outliers, leverage, and influence
+## outliers when points are far from the regression
+## leverage: measure of how extreme explanatory variable values are 
+### calculated with hatvalues(), or augment() under .hat column
+## influence: how much model would change if you left observation out of dataset when modeling
+### cook's distance metric: bigger = more influence
+### cooks.distance() returns values as vector, in augment() under .cooksd column
+
+# In simple linear regression with one explanatory value, values with high or low value have high leverage
+## highly leveraged points are ones with explanatory variables furthest away from others
+# observations with predictions far from trend line have high influence because they have large residuals
+
+mdl_price_vs_dist %>% 
+  # Augment the model
+  augment() %>% 
+  # Arrange rows by descending leverage
+  arrange(desc(.hat)) %>% 
+  # Get the head of the dataset
+  head()
+
+mdl_price_vs_dist %>% 
+  # Augment the model
+  augment() %>% 
+  # Arrange rows by descending Cook's distance
+  arrange(desc(.cooksd)) %>% 
+  # Get the head of the dataset
+  head()
+
+# Plot the three outlier diagnostics for mdl_price_vs_conv
+autoplot(mdl_price_vs_dist, which = 4:6, nrow = 3, ncol = 1)
+## leverage and influence are important concepts for determining if model is overly affected by unusual data points
+
+
+

@@ -1,0 +1,4 @@
+"0","# Explore the Data"
+"0","ggplot(foodin2, aes(state, insecure_percen)) +"
+"0","  stat_summary(geom = ""bar"", fun.y = ""mean"") + coord_flip()"
+"2","`fun.y` is deprecated. Use `fun` instead."

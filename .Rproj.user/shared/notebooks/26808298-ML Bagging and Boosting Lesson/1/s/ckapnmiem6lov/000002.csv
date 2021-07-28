@@ -1,0 +1,20 @@
+"0","glimpse(wine)"
+"1","Rows: 8,380"
+"1",""
+"1","
+"
+"1","Columns: 8"
+"1",""
+"1","
+"
+"1","$ province  [3m[38;5;246m<chr>[39m[23m ""Oregon"", ""Oregon"", ""California"", ""Oregon"", ""Oregon"", ""Oregon"", ""California"", ""California"", ""California"", ""Oregon"", ""Oregon"", ""Oregon"", ""Oregon"", …
+$ points    [3m[38;5;246m<dbl>[39m[23m 87, 87, 87, 86, 86, 86, 91, 91, 91, 91, 85, 85, 85, 89, 89, 89, 92, 87, 95, 95, 88, 92, 92, 92, 92, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 93…
+$ year      [3m[38;5;246m<dbl>[39m[23m 2012, 2013, 2011, 2010, 2009, 2015, 2013, 2012, 2014, 2014, 2006, 2006, 2006, 2009, 2009, 2009, 2011, 2009, 2013, 2014, 1999, 2011, 2010, 2010, 20…
+$ year_f    [3m[38;5;246m<fct>[39m[23m 2012, 2013, 2011, 2010, 2009, 2015, 2013, 2012, 2014, 2014, 2006, 2006, 2006, 2009, 2009, 2009, 2011, 2009, 2013, 2014, 1999, 2011, 2010, 2010, 20…
+$ cherry    [3m[38;5;246m<lgl>[39m[23m FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, FALS…
+$ chocolate [3m[38;5;246m<lgl>[39m[23m FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, F…
+$ earth     [3m[38;5;246m<lgl>[39m[23m TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE…
+$ lprice    [3m[38;5;246m<dbl>[39m[23m 4.174387, 2.995732, 4.234107, 3.912023, 3.091042, 3.218876, 4.158883, 4.007333, 3.784190, 3.637586, 3.332205, 3.806662, 3.091042, 4.007333, 3.6888…"
+"1",""
+"1","
+"

@@ -1,3 +1,4 @@
 "0","library(readxl)"
+"0","MMG2021_2019Data_ToShare <- read_excel(""~/Downloads/Map the Meal Gap Data/MMG2021_2019Data_ToShare.xlsx"")"
 "0","foodin <- read_excel(""~/Downloads/Map the Meal Gap Data/MMG2021_2019Data_ToShare.xlsx"", sheet = ""2019 County"")"
 "0","View(foodin)"

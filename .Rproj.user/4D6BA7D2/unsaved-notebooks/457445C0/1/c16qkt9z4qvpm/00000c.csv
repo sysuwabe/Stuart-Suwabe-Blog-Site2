@@ -1,0 +1,2 @@
+"0","library(rpart.plot)"
+"0","rpart.plot(foodfit$finalModel, type = 5) "

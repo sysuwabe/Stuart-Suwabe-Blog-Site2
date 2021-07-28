@@ -1,0 +1,190 @@
+---
+title: "TidyCensus/FREDR"
+author: "Stuart Suwabe"
+date: "7/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidycensus)
+census_api_key("41dcf38aad5e9257d3d377a226d8f5ce88274d23", install = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+vari <- load_variables(2019, "acs5", cache = TRUE)
+View(vari)
+```
+
+
+```{r cars}
+PubTransBelPov <- get_acs(geography = "county", variables = "B08122_014", state = "CA", year = 2019)
+PubTransBelPov1 <- PubTransBelPov %>% rename(county = NAME, PubTransBelPov = estimate) %>% select(county, PubTransBelPov)
+View(PubTransBelPov1)
+```
+
+
+
+```{r pressure, echo=FALSE}
+FoodAssist <- get_acs(geography = "county", variables = "B09010_002", state = "CA", year = 2019)
+FoodAssist1 <- FoodAssist %>% rename(county = NAME, FoodAssist = estimate) %>% select(county, FoodAssist)
+# number of people who rely on SSI, food stamps, or other support
+
+NoFoodAssist <- get_acs(geography = "county", variables = "B09010_008", state = "CA", year = 2019)
+NoFoodAssist1 <- FoodAssist %>% rename(county = NAME, NoFoodAssist = estimate) %>% select(county, NoFoodAssist)
+
+IncomePovBelow <- get_acs(geography = "county", variables = "B17012_002", state = "CA", year = 2019)
+IncomePovBelow1 <- IncomePovBelow %>% rename(county = NAME, IncomePovBelow = estimate) %>% select(county, IncomePovBelow)
+# number of families whose income puts them below the poverty line
+
+EduHSBelow <- get_acs(geography = "county", variables = "B06009_002", state = "CA", year = 2019)
+EduHSBelow1 <- EduHSBelow %>% rename(county = NAME, EduHSBelow = estimate) %>% select(county, EduHSBelow)
+# number of people not graduated high school
+
+EduHSGrad <- get_acs(geography = "county", variables = "B06009_003", state = "CA", year = 2019)
+EduHSGrad1 <- EduHSGrad %>% rename(county = NAME, EduHSGrad = estimate) %>% select(county, EduHSGrad)
+# number of people who graduated high school
+
+EduSomeCol <- get_acs(geography = "county", variables = "B06009_004", state = "CA", year = 2019)
+EduSomeCol1 <- EduSomeCol %>% rename(county = NAME, EduSomeCol = estimate) %>% select(county, EduSomeCol)
+# number of people with some college
+
+EduBach <- get_acs(geography = "county", variables = "B06009_005", state = "CA", year = 2019)
+EduBach1 <- EduBach %>% rename(county = NAME, EduBach = estimate) %>% select(county, EduBach)
+# number of people with a Bachelor's Degree
+
+```
+
+```{r}
+x19test <- x19 %>% rename(county = `County, State`)
+
+x19test2 <- merge(x19test, PubTransBelPov1, by = "county")
+x19test3 <- merge(x19test2, FoodAssist1, by = "county")
+x19test4 <- merge(x19test3, NoFoodAssist1, by = "county")
+x19test5 <- merge(x19test4, IncomePovBelow1, by = "county")
+x19test6 <- merge(x19test5, EduHSBelow1, by = "county")
+x19test7 <- merge(x19test6, EduHSGrad1, by = "county")
+x19test8 <- merge(x19test7, EduSomeCol1, by = "county")
+x19test9 <- merge(x19test8, EduBach1, by = "county")
+
+library(readxl)
+foodin19 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2021_2019Data_ToShare.xlsx", sheet = "2019 County")
+foodin19a <- foodin19 %>% rename(county = `County, State`, insecure_percen = `2019 Food Insecurity Rate`, insecure_num = `# of Food Insecure Persons in 2019`, insecure_low_income = `% FI ≤ Low Threshold`, insecure_btwn_income = `% FI Btwn Thresholds`, insecure_high_income = `% FI > High Threshold`, insecure_child_percen = `2019 Child food insecurity rate`, insecure_child_num = `# of Food Insecure Children in 2019`, child_below_poverty_percen = `% food insecure children in HH w/ HH incomes below 185 FPL in 2019`, child_above_poverty_percen = `% food insecure children in HH w/ HH incomes above 185 FPL in 2019`, secure_meal_value = `2019 Cost Per Meal`)  %>% filter(State == "CA") %>% mutate(population = round(insecure_num / insecure_percen, digits = 0))
+View(foodin19a)
+```
+
+```{r}
+foodin19x <- foodin19a[-c(1:2,6:9,11,18)]
+foodinT <- merge(foodin19x, x19test9, by = "county") 
+foodinT <- foodinT[-c(12:14,18)]
+foodintest <- foodinT[-c(1,3)]
+```
+
+```{r}
+library(tidymodels)
+
+set.seed(504)
+data_split <- initial_split(foodintest, prop = 3/4)
+train <- training(data_split)
+test  <- testing(data_split)
+
+food_rec <- 
+  recipe(insecure_percen.x ~ ., data = train) %>% 
+  step_BoxCox(all_numeric(), -all_outcomes()) 
+
+lm_spec <- 
+  linear_reg() %>% 
+  set_engine("lm")
+
+food_wflow <- 
+  workflow() %>% 
+  add_model(lm_spec) %>% 
+  add_recipe(food_rec)
+
+food_fit <- fit(food_wflow, train)
+
+food_fit %>% ## display results
+  pull_workflow_fit() %>% 
+  tidy() 
+```
+
+```{r}
+food_pred <- predict(food_fit, test %>% select(-insecure_percen.x)) 
+head(food_pred)
+```
+
+```{r}
+food_results <- bind_cols(food_pred, test %>% select(insecure_percen.x))
+head(food_results)
+```
+```{r}
+ggplot(food_results, aes(x = insecure_percen.x, y = .pred)) + 
+  geom_abline(lty = 2) + 
+  geom_point() + 
+  labs(y = "Predicted food insecurity percentage", x = "food insecurity percentage") +
+  coord_obs_pred()
+```
+
+```{r}
+food_metrics <- metric_set(rmse, rsq, mae)
+food_metrics(food_results, truth = insecure_percen.x, estimate = .pred)
+```
+
+```{r}
+foodm1 <- predict(food_fit, test) %>%
+  bind_cols(test %>% select(insecure_percen.x))  
+
+foodm1 
+foodm1 %>% summary()
+```
+
+
+```{r}
+library(caret)
+
+# foodintest1 <- foodintest[-c(4,5)]
+
+set.seed(504)
+m1 <- train(insecure_percen.x ~ .,
+            data = foodintest1, 
+            method = "lm", 
+            trControl = trainControl(number = 1),
+            preProcess = c("BoxCox", "center", "scale"))
+
+summary(m1)
+
+library(modelr)
+rmse(m1, foodintest1) 
+```
+
+```{r}
+ctrl <- trainControl(method = "cv")
+foodfit <- train(insecure_percen.x ~ ., data = foodintest1,
+             method = "rpart",
+             trControl = ctrl,
+             metric = "RMSE", 
+             tuneGrid = expand.grid(cp = 0.01))
+
+foodfit
+```
+
+```{r}
+library(rpart.plot)
+rpart.plot(foodfit$finalModel, type = 5) 
+# If the county has less than 27000 people with a bachelor's degree, and the county's number of food insecure people with higher income is less than 27%, and if the county's value for a secure meal is greater than $3.30, there is a 15% chance 
+```
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+"0","PubTransBelPov <- get_acs(geography = ""county"", variables = ""B08122_014"", state = ""CA"", year = 2019)"
+"2","Getting data from the 2015-2019 5-year ACS
+"
+"2","Using FIPS code '06' for state 'CA'
+"
+"0","PubTransBelPov1 <- PubTransBelPov %>% rename(`County, State` = NAME, estimate = PubTransBelPov) %>% select(county, PubTransBelPov)"
+"2","Note: Using an external vector in selections is ambiguous.
+[34mℹ[39m Use `all_of(PubTransBelPov)` instead of `PubTransBelPov` to silence this message.
+[34mℹ[39m See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
+[90mThis message is displayed once per session.[39m
+"
+"2","Error: Must rename columns with a valid subscript vector.
+[31mx[39m Subscript has the wrong type `tbl_df<
+  GEOID   : character
+  NAME    : character
+  variable: character
+  estimate: double
+  moe     : double
+>`.
+[34mℹ[39m It must be numeric or character.
+[90mRun `rlang::last_error()` to see where the error occurred.[39m
+"
