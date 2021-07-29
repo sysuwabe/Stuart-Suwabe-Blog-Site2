@@ -1,0 +1,48 @@
+"0","library(tidymodels)"
+"2","Registered S3 method overwritten by 'tune':
+  method                   from   
+  required_pkgs.model_spec parsnip
+"
+"2","[30m── [1mAttaching packages[22m ───────────────────────────── tidymodels 0.1.3 ──[39m
+"
+"2","[30m[32m✓[30m [34mbroom       [30m 0.7.8      [32m✓[30m [34mrsample     [30m 0.1.0 
+[32m✓[30m [34mdials       [30m 0.0.9      [32m✓[30m [34mtune        [30m 0.1.6 
+[32m✓[30m [34minfer       [30m 0.5.4      [32m✓[30m [34mworkflows   [30m 0.2.3 
+[32m✓[30m [34mmodeldata   [30m 0.1.1      [32m✓[30m [34mworkflowsets[30m 0.0.2 
+[32m✓[30m [34mparsnip     [30m 0.1.7      [32m✓[30m [34myardstick   [30m 0.0.8 
+[32m✓[30m [34mrecipes     [30m 0.1.16     [39m
+"
+"2","[30m── [1mConflicts[22m ──────────────────────────────── tidymodels_conflicts() ──
+[31mx[30m [34mscales[30m::[32mdiscard()[30m masks [34mpurrr[30m::discard()
+[31mx[30m [34mdplyr[30m::[32mfilter()[30m   masks [34mstats[30m::filter()
+[31mx[30m [34mrecipes[30m::[32mfixed()[30m  masks [34mstringr[30m::fixed()
+[31mx[30m [34mdplyr[30m::[32mlag()[30m      masks [34mstats[30m::lag()
+[31mx[30m [34myardstick[30m::[32mspec()[30m masks [34mreadr[30m::spec()
+[31mx[30m [34mrecipes[30m::[32mstep()[30m   masks [34mstats[30m::step()
+[34m•[30m Use [32mtidymodels_prefer()[30m to resolve common conflicts.[39m
+"
+"0","set.seed(504)"
+"0","data_split <- initial_split(foodintestX, prop = 3/4)"
+"0","train <- training(data_split)"
+"0","test  <- testing(data_split)"
+"0",""
+"0","food_rec <- "
+"0","  recipe(insecure_percen.x ~ ., data = train) %>% "
+"0","  step_BoxCox(all_numeric(), -all_outcomes()) "
+"0",""
+"0","lm_spec <- "
+"0","  linear_reg() %>% "
+"0","  set_engine(""lm"")"
+"0",""
+"0","food_wflow <- "
+"0","  workflow() %>% "
+"0","  add_model(lm_spec) %>% "
+"0","  add_recipe(food_rec)"
+"0",""
+"0","food_fit <- fit(food_wflow, train)"
+"0",""
+"0","food_fit %>% ## display results"
+"0","  pull_workflow_fit() %>% "
+"0","  tidy() "
+"2","`pull_workflow_fit()` was deprecated in workflows 0.2.3.
+Please use `extract_fit_parsnip()` instead."

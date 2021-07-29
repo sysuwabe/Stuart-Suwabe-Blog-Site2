@@ -185,8 +185,61 @@ rpart.plot(foodfit$finalModel, type = 5)
 CarPoolBelPov <- get_acs(geography = "county", variables = "B08122_010", state = "CA", year = 2019)
 CarPoolBelPov1 <- CarPoolBelPov %>% rename(county = NAME, CarPoolBelPov = estimate) %>% select(county, CarPoolBelPov)
 foodin02 <- merge(foodinT, CarPoolBelPov1, by = "county")
+foodintestX <- foodin02[-c(1,3,5,15)]
 # number of people in extreme poverty who carpool
 ```
+
+
+```{r}
+library(tidymodels)
+
+set.seed(504)
+data_split <- initial_split(foodintestX, prop = 3/4)
+train <- training(data_split)
+test  <- testing(data_split)
+
+food_rec <- 
+  recipe(insecure_percen.x ~ ., data = train) %>% 
+  step_BoxCox(all_numeric(), -all_outcomes()) 
+
+lm_spec <- 
+  linear_reg() %>% 
+  set_engine("lm")
+
+food_wflow <- 
+  workflow() %>% 
+  add_model(lm_spec) %>% 
+  add_recipe(food_rec)
+
+food_fit <- fit(food_wflow, train)
+
+food_fit %>% ## display results
+  pull_workflow_fit() %>% 
+  tidy() 
+```
+
+```{r}
+library(caret)
+
+# foodintest1 <- foodintest[-c(4,5)]
+
+set.seed(504)
+m1 <- train(insecure_percen.x ~ .,
+            data = foodintestX, 
+            method = "lm", 
+            trControl = trainControl(number = 1),
+            preProcess = c("BoxCox", "center", "scale"))
+
+summary(m1)
+
+library(modelr)
+rmse(m1, foodintestX) 
+```
+
+
+
+
+
 
 
 
