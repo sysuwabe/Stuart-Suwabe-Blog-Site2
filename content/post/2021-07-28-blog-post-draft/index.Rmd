@@ -9,8 +9,24 @@ tags:
   - R Markdown
 ---
 
-This is a test. Yes. Making sure of the test now. 
 
+## The Pandemic's Food Pains 
+
+The pandemic has hurt everyday society in many ways, and has taken many moments of progress and has pushed them back to Great Recession days. This comparison can be seen with the sharp increase in food insecurity in the United States. In 2020, the average percentage of the population of California counties that could not get a decent meal on the table was around 20%, a collective one fifth of the whole of California! This is unfortunate because food insecurity rates were at an all-time low just a year prior. 
+
+Yes, more and more attempts to curb the need for food were taken over the past decade to lower the food insecurity percentage. The USDA in 2019 alone utilized $92.4 billion to fund its 15 food nutrition assistance programs like the Supplemental Nutrition Assistance Program (or SNAP) and the Special Supplemental Nutrition Program for Women, Infants, and Children (or WIC), among others like the National School Lunch Program. The USDA has no doubt kicked into overdrive to provide for a massive population reeling from a worldwide pandemic, but its clear that "normalcy", or what we had before the pandemic, will take a long time to accomplish. As of the beginning of summer 2021, the food insecurity rate has not decreased, remaining stagnant. Good, but it could be better. 
+
+Thus we can use data to try and figure our own solutions, outside of the government and the USDA pushing forward with special food aid. 
+
+The Map the Meal Gap data from the US Hunger Relief Organization Feeding America offers their percentage-driven population data taking stock of the food insecurity percentage of the overall population, the number of children within this population, income percentages of families with children, and even the average cost of a homemade meal! From such data, results could be drawn that deal with poverty or income. That said, the data is rather limited in this regard. 
+
+To those familiar with the R coding system, there exists a library that allows access to FRED, the Federal Reserve of Economic Data. From here, more numerically set pieces of population data can be found, with population numbers based on other features like transportation and schooling. Thus we now have a couple more features to look into to figure potential solutions to helping the food insecurity issue. 
+
+From what we could gather via linear regression, low poverty is the clear deciding factor in the food insecurity percentage, which makes sense. While the other factors are rather miniscule in comparison, there are a few details to note: notably there is a small correlation with the number of people in poverty that use public transportation. 
+
+What do we do with these results? The idea is to go to lawmakers with these results in mind. In this one case, perhaps vying for more support in the public transportation sector could help with the food insecurity percentage, and we may want to extend our hand and maybe carpool with those that need it. I have no doubt in my mind that people nowadays are capable of supporting others in trying times, and even as the pandemic winds down or resurges, whatever we can do will help us overcome food insecurity. 
+
+Gonna need pictures, and the will need to play around with the code a bit more...
 
 
 

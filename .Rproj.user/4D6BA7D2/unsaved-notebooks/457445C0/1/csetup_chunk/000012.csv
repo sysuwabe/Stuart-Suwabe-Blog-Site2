@@ -1,0 +1,4 @@
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0","library(tidyverse)"
+"0","library(tidycensus)"
+"0","# census_api_key(""41dcf38aad5e9257d3d377a226d8f5ce88274d23"", install = TRUE)"

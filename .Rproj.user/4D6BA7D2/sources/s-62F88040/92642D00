@@ -3,22 +3,22 @@
     "path": "~/Desktop/Stuart-Suwabe-Blog-Site/content/post/2021-07-28-blog-post-draft/index.Rmd",
     "project_path": "content/post/2021-07-28-blog-post-draft/index.Rmd",
     "type": "r_markdown",
-    "hash": "2852793619",
+    "hash": "1910087521",
     "contents": "",
     "dirty": false,
     "created": 1627512082455.0,
     "source_on_save": false,
-    "relative_order": 13,
+    "relative_order": 12,
     "properties": {
-        "cursorPosition": "11,50",
-        "scrollLine": "0"
+        "cursorPosition": "28,81",
+        "scrollLine": "19"
     },
     "folds": "",
-    "lastKnownWriteTime": 1627515753,
+    "lastKnownWriteTime": 1627520169,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1627515753210,
+    "last_content_update": 1627520169491,
     "read_only": false,
     "read_only_alternatives": []
 }
