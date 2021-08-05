@@ -2,7 +2,7 @@
 title: 'Food Insecurity Code - Over the Years'
 author: R package build
 date: '2021-08-02'
-slug: food-insecurity-code-exploration-and-modeling
+slug: food-insecurity-code-over-the-years
 categories:
   - R
 tags:
