@@ -1,0 +1,1 @@
+"0","STfoodin %>% ggplot(aes(year,insecure_percen)) + geom_point() + ggtitle(""Food Insecurity Percentage Decreasing Over Time in Sutter County"") + xlab(""year over time"") + ylab(""food insecurity percentage"")"

@@ -1,15 +1,104 @@
 ---
-title: Food Insecurity Code - Exploration and Modeling
-author: R package build
+title: "Food Insecurity Code - Over the Years"
+author: "R package build"
 date: '2021-08-02'
-slug: food-insecurity-code-exploration-and-modeling
-categories:
-  - R
+slug: food-insecurity-code-over-the-years
+categories: R
 tags:
-  - R Markdown
-  - regression
+- R Markdown
+- regression
 ---
 
 
 
+<div id="over-the-years" class="section level2">
+<h2>Over the Years</h2>
+<p>The combined data was made up of multiple datasets that need to be binded together to witness movement over time. This code only uses certain columns from the data, though some labels needed to be changed so they could be merged later on.</p>
+</div>
+<div id="choosing-examples" class="section level2">
+<h2>Choosing examples</h2>
+<p>I wanted to look at three different counties. I decided these three: the capital, the location of the food pantry I work at, and a place some relatives live.</p>
+<pre class="r"><code>x19 &lt;- x19 %&gt;% filter(State == &quot;CA&quot;)
+x19a &lt;- x19 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x19b &lt;- x19 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x19c &lt;- x19 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
 
+x18 &lt;- x18 %&gt;% filter(State == &quot;CA&quot;)
+x18a &lt;- x18 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x18b &lt;- x18 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x18c &lt;- x18 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+x17 &lt;- x17 %&gt;% filter(State == &quot;CA&quot;)
+x17a &lt;- x17 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x17b &lt;- x17 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x17c &lt;- x17 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+x16 &lt;- x16 %&gt;% filter(State == &quot;CA&quot;) 
+x16a &lt;- x16 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x16b &lt;- x16 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x16c &lt;- x16 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+x15 &lt;- x15 %&gt;% filter(State == &quot;CA&quot;) 
+x15a &lt;- x15 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x15b &lt;- x15 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x15c &lt;- x15 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+x14 &lt;- x14 %&gt;% filter(State == &quot;CA&quot;)
+x14a &lt;- x14 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x14b &lt;- x14 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x14c &lt;- x14 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+x13 &lt;- x13 %&gt;% filter(State == &quot;CA&quot;)
+x13a &lt;- x13 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x13b &lt;- x13 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x13c &lt;- x13 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+x12 &lt;- x12 %&gt;% filter(State == &quot;CA&quot;) 
+x12a &lt;- x12 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x12b &lt;- x12 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x12c &lt;- x12 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+x11 &lt;- x11 %&gt;% filter(State == &quot;CA&quot;)
+x11a &lt;- x11 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x11b &lt;- x11 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x11c &lt;- x11 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+x10 &lt;- x10 %&gt;% filter(State == &quot;CA&quot;)
+x10a &lt;- x10 %&gt;% filter(`County, State` == &quot;Sacramento County, California&quot;)
+x10b &lt;- x10 %&gt;% filter(`County, State` == &quot;Yuba County, California&quot;)
+x10c &lt;- x10 %&gt;% filter(`County, State` == &quot;Los Angeles County, California&quot;)
+
+SCfoodin &lt;- rbind(x10a, x11a, x12a, x13a, x14a, x15a, x16a, x17a, x18a, x19a)
+STfoodin &lt;- rbind(x10b, x11b, x12b, x13b, x14b, x15b, x16b, x17b, x18b, x19b)
+LAfoodin &lt;- rbind(x10c, x11c, x12c, x13c, x14c, x15c, x16c, x17c, x18c, x19c)
+
+SCfoodin$year &lt;- c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019)
+STfoodin$year &lt;- c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019)
+LAfoodin$year &lt;- c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>STfoodin %&gt;% ggplot(aes(year,insecure_percen)) + geom_point() + ggtitle(&quot;Food Insecurity Percentage Decreasing Over Time in Yuba County&quot;) + xlab(&quot;year over time&quot;) + ylab(&quot;food insecurity percentage&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>LAfoodin %&gt;% ggplot(aes(year,insecure_percen)) + geom_point() + ggtitle(&quot;Food Insecurity Percentage Decreasing Over Time in Los Angeles County&quot;) + xlab(&quot;year over time&quot;) + ylab(&quot;food insecurity percentage&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="price-of-a-meal" class="section level2">
+<h2>Price of a meal</h2>
+<p>Looking into the average price of a meal in these counties, it clearly increases over time, thanks to inflation and generally how things become pricier over time. Sacramento and Yuba counties, for some reason, have a drop in price in 2019, even if it’s only a few cents. This single drop shouldn’t have too much of an impact on the analysis.</p>
+<pre class="r"><code>LAfoodin %&gt;% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle(&quot;Price of a meal in Los Angeles county increases over time&quot;) + xlab(&quot;year over time&quot;) + ylab(&quot;food insecurity percentage&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>SCfoodin %&gt;% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle(&quot;Price of a meal in Sacramento county increases over time&quot;) + xlab(&quot;year over time&quot;) + ylab(&quot;food insecurity percentage&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>STfoodin %&gt;% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle(&quot;Price of a meal in Yuba county increases over time&quot;) + xlab(&quot;year over time&quot;) + ylab(&quot;food insecurity percentage&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="weighted-annual-food-budget-shortfall" class="section level2">
+<h2>Weighted Annual Food Budget Shortfall</h2>
+<p>According to the key of the data sets, this column describes the “weighted weekly dollars needed by the food insecure multiplied by the population of the geography”. In other words, by adding the amount of money per week needed by food insecure individuals, then multiplying it by the total county population, you are given, in essence, a minimum budget for food allocation for the county.</p>
+<p>The numbers very over time between each county, but all three counties show a general decrease in the budget over time, barring Sacramento’s massive jump.</p>
+<pre class="r"><code>STfoodin %&gt;% ggplot(aes(year,`Weighted Annual Food Budget Shortfall`)) + geom_point() + ggtitle(&quot;Minimum food budget in Yuba county over time&quot;) + xlab(&quot;year over time&quot;) + ylab(&quot;food budget&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>SCfoodin %&gt;% ggplot(aes(year,`Weighted Annual Food Budget Shortfall`)) + geom_point() + ggtitle(&quot;Minimum food budget in Sacramento county over time&quot;) + xlab(&quot;year over time&quot;) + ylab(&quot;food budget&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>LAfoodin %&gt;% ggplot(aes(year,`Weighted Annual Food Budget Shortfall`)) + geom_point() + ggtitle(&quot;Minimum food budget in Los Angeles county over time&quot;) + xlab(&quot;year over time&quot;) + ylab(&quot;food budget&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>

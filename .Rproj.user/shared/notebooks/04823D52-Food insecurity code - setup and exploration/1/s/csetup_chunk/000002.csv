@@ -1,0 +1,7 @@
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0","library(tidyverse)"
+"0","library(tidycensus)"
+"0","library(readxl)"
+"0",""
+"0","foodin19 <- read_excel(""~/Downloads/Map the Meal Gap Data/MMG2021_2019Data_ToShare.xlsx"", sheet = ""2019 County"")"
+"0","foodin19a <- foodin19 %>% rename(county = `County, State`, insecure_percen = `2019 Food Insecurity Rate`, insecure_num = `# of Food Insecure Persons in 2019`, insecure_low_income = `% FI ≤ Low Threshold`, insecure_btwn_income = `% FI Btwn Thresholds`, insecure_high_income = `% FI > High Threshold`, insecure_child_percen = `2019 Child food insecurity rate`, insecure_child_num = `# of Food Insecure Children in 2019`, child_below_poverty_percen = `% food insecure children in HH w/ HH incomes below 185 FPL in 2019`, child_above_poverty_percen = `% food insecure children in HH w/ HH incomes above 185 FPL in 2019`, secure_meal_value = `2019 Cost Per Meal`)  %>% filter(State == ""CA"") %>% mutate(population = round(insecure_num / insecure_percen, digits = 0))"

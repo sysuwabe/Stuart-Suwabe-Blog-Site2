@@ -1,25 +1,25 @@
 {
     "id": "F9831CC8",
-    "path": "~/Desktop/Stuart-Suwabe-Blog-Site/content/post/2021-08-02-food-insecurity-code-exploration-and-modeling/index.Rmd",
-    "project_path": "content/post/2021-08-02-food-insecurity-code-exploration-and-modeling/index.Rmd",
+    "path": "~/Desktop/food insecurity code - years.Rmd",
+    "project_path": null,
     "type": "r_markdown",
-    "hash": "2317745486",
+    "hash": "4029077832",
     "contents": "",
     "dirty": false,
     "created": 1627950763945.0,
     "source_on_save": false,
-    "relative_order": 6,
+    "relative_order": 4,
     "properties": {
-        "cursorPosition": "7,5",
+        "cursorPosition": "9,0",
         "scrollLine": "0",
         "last_setup_crc32": ""
     },
     "folds": "",
-    "lastKnownWriteTime": 1628123001,
+    "lastKnownWriteTime": 1628124288,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1628123001084,
+    "last_content_update": 1628124288426,
     "read_only": false,
     "read_only_alternatives": []
 }

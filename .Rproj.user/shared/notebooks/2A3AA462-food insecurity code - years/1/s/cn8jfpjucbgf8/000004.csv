@@ -1,0 +1,1 @@
+"0","SCfoodin %>% ggplot(aes(year,insecure_percen)) + geom_point() + ggtitle(""Food Insecurity Percentage Decreasing Over Time in Sacramento County"") + xlab(""year over time"") + ylab(""food insecurity percentage"")"

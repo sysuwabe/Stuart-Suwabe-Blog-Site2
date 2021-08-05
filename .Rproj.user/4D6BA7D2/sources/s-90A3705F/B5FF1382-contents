@@ -1,12 +1,10 @@
 ---
 title: 'Food Insecurity: What can we do?'
-author: R package build
+author: "R package build"
 date: '2021-08-02'
 slug: food-insecurity-what-can-we-do
-categories:
-  - R
-tags:
-  - R Markdown
+categories: R
+tags: R Markdown
 ---
 
 ![](images/feeding-america.png.webp)
@@ -28,7 +26,7 @@ It doesn't need to be said that the pandemic has made everyone suffer. Complaint
 
 Just imagine not being able to put enough food on the dinner table, having to ration out what little resources you have, or simply going hungry for the night; the inability to gain the nutrition and nourishment needed to live day by day. Ever since the Great Recession from 2008, the percentage of the population that suffered from food insecurity has lessened every year. In 2019, they were at an all-time low! Come that pandemic, and we see levels that match the rates the Great Recession had pulled in. Having analyzed the Census Household Pulse Survey, Northwestern University estimated roughly 23% of the total population of the United States suffered from food insecurity at the peak of the pandemic, over one fifth of the total population! Compared to 2019, many states in the nation had over double the previous food insecurity rate. 
 
-
+![](images/Decreasing food insecurity percentage.pdf)
 Find the data here. 
 
 Yes, more and more attempts to curb the need for food were taken over the past decade to lower the food insecurity percentage. The USDA in 2019 alone utilized $92.4 billion to fund its 15 food nutrition assistance programs like the Supplemental Nutrition Assistance Program (or SNAP) and the Special Supplemental Nutrition Program for Women, Infants, and Children (or WIC), among others like the National School Lunch Program. The USDA has no doubt kicked into overdrive to provide for a massive population reeling from a worldwide pandemic, but its clear that "normalcy", or what we had before the pandemic, will take a long time to accomplish. Even as the pandemic begins to lessen, the recent Delta variant would no doubt lead into another surge, keeping up the larger rate of food insecurity that has since become the norm since the pandemic's beginnings. 
@@ -47,11 +45,11 @@ I mean this in relation to the data. There is no doubt that the pandemic has wre
 
 While seemingly obvious, the more food pantries that are present, the lower the food insecurity rate seems to be overall. That said, even at around 50 pantries in a single county, food insecurity rates can fluctuate drastically from county to county. Food pantries are a stopgap, true, but unless you want to fill up a county with over a hundred of them, a new idea should be approached. 
 
-
+![](images/pantry plot.pdf)
 
 Exploring the data, as it turns out, the higher the average cost for a meal is, the lower the food insecurity rate. While it seems odd at the outset, there are a couple of ways to look at this. First, many of the denser counties that have bigger cities would have higher meal costs. These counties would also therefore have more and more accessible resources to support the food insecure. As well, if the cost is connected to balanced nutrition (as it is often wont to be), then these denser areas would most likely have more access to nutritious food. There is a need to provide that food aid can only go so far as to help, especially since stamps focus on consumable food and not much else. 
 
-
+![](images/Meal cost data.pdf)
 
 So what can be targeted to change or bring focus to? 
 

@@ -1,0 +1,1 @@
+"0","STfoodin %>% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle(""Price of a meal in Yuba county increases over time"") + xlab(""year over time"") + ylab(""food insecurity percentage"")"
