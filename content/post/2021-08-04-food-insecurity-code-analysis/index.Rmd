@@ -17,7 +17,9 @@ foodin19 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2021_2019Data_ToSha
 foodin19a <- foodin19 %>% rename(county = `County, State`, insecure_percen = `2019 Food Insecurity Rate`, insecure_num = `# of Food Insecure Persons in 2019`, insecure_low_income = `% FI ≤ Low Threshold`, insecure_btwn_income = `% FI Btwn Thresholds`, insecure_high_income = `% FI > High Threshold`, insecure_child_percen = `2019 Child food insecurity rate`, insecure_child_num = `# of Food Insecure Children in 2019`, child_below_poverty_percen = `% food insecure children in HH w/ HH incomes below 185 FPL in 2019`, child_above_poverty_percen = `% food insecure children in HH w/ HH incomes above 185 FPL in 2019`, secure_meal_value = `2019 Cost Per Meal`)  %>% filter(State == "CA") %>% mutate(population = round(insecure_num / insecure_percen, digits = 0))
 ```
 
-```{r cars}
+```{r}
+census_api_key("41dcf38aad5e9257d3d377a226d8f5ce88274d23")
+
 PubTransBelPov <- get_acs(geography = "county", variables = "B08122_014", state = "CA", year = 2019)
 PubTransBelPov1 <- PubTransBelPov %>% rename(county = NAME, PubTransBelPov = estimate) %>% select(county, PubTransBelPov)
 PubTransInPov <- get_acs(geography = "county", variables = "B08122_015", state = "CA", year = 2019)
@@ -163,7 +165,7 @@ For the numerical data, the number of people of the population who use public tr
 
 Perhaps recurring the most out of these four model would be the percentage/number of people who only have achieved high school levels of learning, graduated or no. If you look at the fourth model, where EduHSGrad has one star of significance, that estimate means that with a unit increase of 1 for the number of people in poverty whose highest level education is graduating high school, there would be a predicted increase of 156407 people to the food insecure population. Looking at the same feature in model 3, which has no significance in comparison, if there was a 1% increase in these poverty-stricken high school grads, there would be a predicted 0.28% decrease in the food insecure population. 
 
-There are conflicting results to all this, no doubt about it. But there are ways to interpret this. On one hand, the more people that have higher levels of education, the more the food insecurity percentage would decrease overall. As well, if that's the top level of their education without going further, food insecurity may rise as a potential result of a lack of education (leading to a lack of job variety, perhaps). Public transportation and the food budget shortfall are also big players, increasing and decreasing the food insecure population respectively, as well as the percentage of children suffering from food insecurity having an upwards impact on the insecurity rate. 
+There are conflicting results to all this, no doubt about it. But there are ways to interpret this. On one hand, the more people that have higher levels of education, the more the food insecurity percentage would decrease overall. As well, if that's the top level of their education without going further, food insecurity may rise as a potential result of a lack of education (leading to a lack of job variety, perhaps). Public transportation and the food budget shortfall are also big players, increasing and decreasing the food insecure population respectively. As well as the percentage of children suffering from food insecurity having an upwards impact on the insecurity rate. 
 
 
 
