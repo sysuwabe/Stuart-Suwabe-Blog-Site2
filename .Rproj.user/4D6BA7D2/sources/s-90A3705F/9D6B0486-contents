@@ -35,6 +35,38 @@ To get data from FREDR, you need a census api key, something I cannot show. That
 I chose to focus on two specific population numbers for this data: public transportation and education level. Notably I considered everyone in the population and did not parse separate columns by race or gender. The way I see it, making change should be able to affect everyone, and the idea of certain genders and races being discriminated is both obvious and all-encompassing, so I decided to not include it as an extra factor. 
 
 ```{r}
+# census_api_key("41dcf38aad5e9257d3d377a226d8f5ce88274d23", install = TRUE)
+
+PubTransBelPov <- get_acs(geography = "county", variables = "B08122_014", state = "CA", year = 2019)
+PubTransBelPov1 <- PubTransBelPov %>% rename(county = NAME, PubTransBelPov = estimate) %>% select(county, PubTransBelPov)
+PubTransInPov <- get_acs(geography = "county", variables = "B08122_015", state = "CA", year = 2019)
+PubTransInPov1 <- PubTransInPov %>% rename(county = NAME, PubTransInPov = estimate) %>% select(county, PubTransInPov)
+# number of people in poverty that take public transportation in the really low and mid-poverty percentiles 
+
+# basically add them both together
+PubTransPov <- merge(PubTransBelPov1, PubTransInPov1, by = "county")
+PubTransData <- PubTransPov %>% mutate(PubTransPov = PubTransBelPov + PubTransInPov) %>% select(c(county, PubTransPov))
+
+FoodAssist <- get_acs(geography = "county", variables = "B09010_002", state = "CA", year = 2019)
+FoodAssist1 <- FoodAssist %>% rename(county = NAME, FoodAssist = estimate) %>% select(county, FoodAssist)
+# number of people who rely on SSI, food stamps, or other support
+
+EduHSBelow <- get_acs(geography = "county", variables = "B06009_002", state = "CA", year = 2019)
+EduHSBelow1 <- EduHSBelow %>% rename(county = NAME, EduHSBelow = estimate) %>% select(county, EduHSBelow)
+# number of people not graduated high school
+
+EduHSGrad <- get_acs(geography = "county", variables = "B06009_003", state = "CA", year = 2019)
+EduHSGrad1 <- EduHSGrad %>% rename(county = NAME, EduHSGrad = estimate) %>% select(county, EduHSGrad)
+# number of people who graduated high school
+
+EduSomeCol <- get_acs(geography = "county", variables = "B06009_004", state = "CA", year = 2019)
+EduSomeCol1 <- EduSomeCol %>% rename(county = NAME, EduSomeCol = estimate) %>% select(county, EduSomeCol)
+# number of people with some college
+
+EduBach <- get_acs(geography = "county", variables = "B06009_005", state = "CA", year = 2019)
+EduBach1 <- EduBach %>% rename(county = NAME, EduBach = estimate) %>% select(county, EduBach)
+# number of people with a Bachelor's Degree
+
 x19test2 <- merge(foodin19a, PubTransData, by = "county")
 x19test3 <- merge(x19test2, FoodAssist1, by = "county")
 x19test4 <- merge(x19test3, EduHSBelow1, by = "county")
