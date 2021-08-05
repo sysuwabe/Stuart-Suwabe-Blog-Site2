@@ -1,5 +1,5 @@
 ---
-title: Food Insecurity Code - Over the Years
+title: 'Food Insecurity Code - Over the Years'
 author: R package build
 date: '2021-08-02'
 slug: food-insecurity-code-exploration-and-modeling

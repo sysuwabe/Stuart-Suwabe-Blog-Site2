@@ -3,23 +3,23 @@
     "path": "~/Desktop/Stuart-Suwabe-Blog-Site/content/post/2021-08-02-food-insecurity-code-exploration-and-modeling/index.Rmd",
     "project_path": "content/post/2021-08-02-food-insecurity-code-exploration-and-modeling/index.Rmd",
     "type": "r_markdown",
-    "hash": "32598472",
+    "hash": "3087045809",
     "contents": "",
     "dirty": false,
     "created": 1627950763945.0,
     "source_on_save": false,
     "relative_order": 18,
     "properties": {
-        "cursorPosition": "43,0",
-        "scrollLine": "42",
+        "cursorPosition": "1,46",
+        "scrollLine": "0",
         "last_setup_crc32": "1D894596f3b29adf"
     },
     "folds": "",
-    "lastKnownWriteTime": 1628121936,
+    "lastKnownWriteTime": 1628122216,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1628121936324,
+    "last_content_update": 1628122216278,
     "read_only": false,
     "read_only_alternatives": []
 }

@@ -3,22 +3,22 @@
     "path": "~/Desktop/Stuart-Suwabe-Blog-Site/content/post/2021-08-04-food-insecurity-code-analysis/index.Rmd",
     "project_path": "content/post/2021-08-04-food-insecurity-code-analysis/index.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "2448668154",
     "contents": "",
     "dirty": false,
     "created": 1628121319332.0,
     "source_on_save": false,
     "relative_order": 10,
     "properties": {
-        "cursorPosition": "5,8",
+        "cursorPosition": "3,18",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1628121938,
+    "lastKnownWriteTime": 1628122218,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1628121938565,
+    "last_content_update": 1628122218845,
     "read_only": false,
     "read_only_alternatives": []
 }
