@@ -3,22 +3,22 @@
     "path": "~/Desktop/Stuart-Suwabe-Blog-Site/content/post/2021-08-02-food-insecurity-what-can-we-do/index.Rmd",
     "project_path": "content/post/2021-08-02-food-insecurity-what-can-we-do/index.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "583461386",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1627948215577.0,
     "source_on_save": false,
     "relative_order": 16,
     "properties": {
-        "cursorPosition": "59,18",
-        "scrollLine": "52"
+        "cursorPosition": "6,5",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1627950897,
+    "lastKnownWriteTime": 1628121931,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1628121281017,
+    "last_content_update": 1628121931980,
     "read_only": false,
     "read_only_alternatives": []
 }

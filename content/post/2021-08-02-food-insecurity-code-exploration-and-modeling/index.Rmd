@@ -1,5 +1,5 @@
 ---
-title: Food Insecurity Code - Exploration and Modeling
+title: Food Insecurity Code - Over the Years
 author: R package build
 date: '2021-08-02'
 slug: food-insecurity-code-exploration-and-modeling
@@ -10,35 +10,159 @@ tags:
   - regression
 ---
 
-```{r pressure, echo=FALSE}
-foodincaPercen <- foodinca %>% 
-  mutate(PubTransPov = PubTransPov / population) %>%
-  mutate(FoodAssist = FoodAssist / population) %>% 
-  mutate(EduHSBelow = EduHSBelow / population) %>% 
-  mutate(EduHSGrad = EduHSGrad / population) %>% 
-  mutate(EduSomeCol = EduSomeCol / population) %>% 
-  mutate(EduBach = EduBach / population) %>% 
-  select(-c(2,5,9,17))
+## Over the Years
 
-foodincaNum <- foodinca %>% 
-  mutate(child_below_poverty_percen = child_below_poverty_percen * insecure_child_num) %>% # even though it says percen, treat it as a number, not a percentage 
-  mutate(insecure_low_income = insecure_low_income * population) %>%
-  select(-c(1,4,9,17))
+The combined data was made up of multiple datasets that need to be binded together to witness movement over time. This code only uses certain columns from the data, though some labels needed to be changed so they could be merged later on. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(tidyverse)
+
+x19 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2021_2019Data_ToShare.xlsx", sheet = "2019 County")
+x19 <- x19 %>% rename(insecure_percen = `2019 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL in 2019`, secure_meal_value = `2019 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2019 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+
+x18 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2020_2018Data_ToShare.xlsx", sheet = "2018 County")
+names(x18) <- x18 %>% slice(1) %>% unlist()
+x18 <- x18 %>% slice(-1)
+x18 <- x18 %>% rename(insecure_percen = `2018 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL in 2018`, secure_meal_value = `2018 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2018 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+
+x17 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2019_2017Data_ToShare.xlsx", sheet = "2017 County")
+x17 <- x17 %>% rename(insecure_percen = `2017 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL in 2017`, secure_meal_value = `2017 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2017 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+
+x16 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2018_2016Data_ToShare.xlsx", sheet = "2016 County")
+x16 <- x16 %>% rename(insecure_percen = `2016 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL in 2016`, secure_meal_value = `2016 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2016 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+
+x15 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2017_2015Data_ToShare.xlsx", sheet = "2015 County")
+x15 <- x15 %>% rename(insecure_percen = `2015 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL in 2015`, secure_meal_value = `2015 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2015 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+
+x14 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2016_2014Data_ToShare.xlsx", sheet = "2014 County")
+x14 <- x14 %>% rename(insecure_percen = `2014 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL in 2014`, secure_meal_value = `2014 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2014 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+
+x13 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2015_2013Data_ToShare.xlsx", sheet = "2013 County")
+x13 <- x13 %>% rename(insecure_percen = `2013 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL in 2013`, secure_meal_value = `2013 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2013 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+
+x12 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2014_2012Data_ToShare.xlsx", sheet = "2012 County")
+x12 <- x12 %>% rename(insecure_percen = `2012 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL in 2012`, secure_meal_value = `2012 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2012 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+
+x11 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2013_2011Data_ToShare.xlsx", sheet = "2011 County")
+x11 <- x11 %>% rename(insecure_percen = `2011 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL`, secure_meal_value = `Cost Per Meal`) %>% select(-c(5,13:14,16))
+
+x10 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2012_2010Data_ToShare.xlsx", sheet = "County")
+x10 <- x10 %>% rename(insecure_percen = `2010 Food Insecurity Rate`, `percent of food insecure children below poverty threshold` = `% food insecure children in HH w/ HH incomes below 185 FPL`, secure_meal_value = `2010 Cost Per Meal`, `Weighted Annual Food Budget Shortfall` = `2010 Weighted Annual Food Budget Shortfall`) %>% select(-c(5,13:14,16))
+```
+
+## Choosing examples
+
+I wanted to look at three different counties. I decided these three: the capital, the location of the food pantry I work at, and a place some relatives live. 
+
+```{r}
+x19 <- x19 %>% filter(State == "CA")
+x19a <- x19 %>% filter(`County, State` == "Sacramento County, California")
+x19b <- x19 %>% filter(`County, State` == "Yuba County, California")
+x19c <- x19 %>% filter(`County, State` == "Los Angeles County, California")
+
+x18 <- x18 %>% filter(State == "CA")
+x18a <- x18 %>% filter(`County, State` == "Sacramento County, California")
+x18b <- x18 %>% filter(`County, State` == "Yuba County, California")
+x18c <- x18 %>% filter(`County, State` == "Los Angeles County, California")
+
+x17 <- x17 %>% filter(State == "CA")
+x17a <- x17 %>% filter(`County, State` == "Sacramento County, California")
+x17b <- x17 %>% filter(`County, State` == "Yuba County, California")
+x17c <- x17 %>% filter(`County, State` == "Los Angeles County, California")
+
+x16 <- x16 %>% filter(State == "CA") 
+x16a <- x16 %>% filter(`County, State` == "Sacramento County, California")
+x16b <- x16 %>% filter(`County, State` == "Yuba County, California")
+x16c <- x16 %>% filter(`County, State` == "Los Angeles County, California")
+
+x15 <- x15 %>% filter(State == "CA") 
+x15a <- x15 %>% filter(`County, State` == "Sacramento County, California")
+x15b <- x15 %>% filter(`County, State` == "Yuba County, California")
+x15c <- x15 %>% filter(`County, State` == "Los Angeles County, California")
+
+x14 <- x14 %>% filter(State == "CA")
+x14a <- x14 %>% filter(`County, State` == "Sacramento County, California")
+x14b <- x14 %>% filter(`County, State` == "Yuba County, California")
+x14c <- x14 %>% filter(`County, State` == "Los Angeles County, California")
+
+x13 <- x13 %>% filter(State == "CA")
+x13a <- x13 %>% filter(`County, State` == "Sacramento County, California")
+x13b <- x13 %>% filter(`County, State` == "Yuba County, California")
+x13c <- x13 %>% filter(`County, State` == "Los Angeles County, California")
+
+x12 <- x12 %>% filter(State == "CA") 
+x12a <- x12 %>% filter(`County, State` == "Sacramento County, California")
+x12b <- x12 %>% filter(`County, State` == "Yuba County, California")
+x12c <- x12 %>% filter(`County, State` == "Los Angeles County, California")
+
+x11 <- x11 %>% filter(State == "CA")
+x11a <- x11 %>% filter(`County, State` == "Sacramento County, California")
+x11b <- x11 %>% filter(`County, State` == "Yuba County, California")
+x11c <- x11 %>% filter(`County, State` == "Los Angeles County, California")
+
+x10 <- x10 %>% filter(State == "CA")
+x10a <- x10 %>% filter(`County, State` == "Sacramento County, California")
+x10b <- x10 %>% filter(`County, State` == "Yuba County, California")
+x10c <- x10 %>% filter(`County, State` == "Los Angeles County, California")
+
+SCfoodin <- rbind(x10a, x11a, x12a, x13a, x14a, x15a, x16a, x17a, x18a, x19a)
+STfoodin <- rbind(x10b, x11b, x12b, x13b, x14b, x15b, x16b, x17b, x18b, x19b)
+LAfoodin <- rbind(x10c, x11c, x12c, x13c, x14c, x15c, x16c, x17c, x18c, x19c)
+
+SCfoodin$year <- c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019)
+STfoodin$year <- c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019)
+LAfoodin$year <- c(2010,2011,2012,2013,2014,2015,2016,2017,2018,2019)
+```
+
+
+
+```{r echo=FALSE}
+SCfoodin %>% ggplot(aes(year,insecure_percen)) + geom_point() + ggtitle("Food Insecurity Percentage Decreasing Over Time in Sacramento County") + xlab("year over time") + ylab("food insecurity percentage")
 ```
 
 ```{r}
-set.seed(504)
-m2 <- train(insecure_num ~ .,
-            data = foodincaNum, 
-            method = "lm", 
-            trControl = trainControl(number = 1),
-            preProcess = c("BoxCox", "center", "scale"))
-
-summary(m2)
-
-library(modelr)
-rmse(m2, foodincaNum) 
+STfoodin %>% ggplot(aes(year,insecure_percen)) + geom_point() + ggtitle("Food Insecurity Percentage Decreasing Over Time in Yuba County") + xlab("year over time") + ylab("food insecurity percentage")
 ```
+
+```{r}
+LAfoodin %>% ggplot(aes(year,insecure_percen)) + geom_point() + ggtitle("Food Insecurity Percentage Decreasing Over Time in Los Angeles County") + xlab("year over time") + ylab("food insecurity percentage")
+```
+
+## Price of a meal
+Looking into the average price of a meal in these counties, it clearly increases over time, thanks to inflation and generally how things become pricier over time. Sacramento and Yuba counties, for some reason, have a drop in price in 2019, even if it's only a few cents. This single drop shouldn't have too much of an impact on the analysis. 
+
+```{r}
+LAfoodin %>% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle("Price of a meal in Los Angeles county increases over time") + xlab("year over time") + ylab("food insecurity percentage")
+```
+
+```{r}
+SCfoodin %>% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle("Price of a meal in Sacramento county increases over time") + xlab("year over time") + ylab("food insecurity percentage")
+```
+
+```{r}
+STfoodin %>% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle("Price of a meal in Yuba county increases over time") + xlab("year over time") + ylab("food insecurity percentage")
+```
+
+## Weighted Annual Food Budget Shortfall
+
+According to the key of the data sets, this column describes the "weighted weekly dollars needed by the food insecure multiplied by the population of the geography". In other words, by adding the amount of money per week needed by food insecure individuals, then multiplying it by the total county population, you are given, in essence, a minimum budget for food allocation for the county.
+
+The numbers very over time between each county, but all three counties show a general decrease in the budget over time, barring Sacramento's massive jump. 
+
+```{r}
+STfoodin %>% ggplot(aes(year,`Weighted Annual Food Budget Shortfall`)) + geom_point() + ggtitle("Minimum food budget in Yuba county over time") + xlab("year over time") + ylab("food budget")
+```
+
+```{r}
+SCfoodin %>% ggplot(aes(year,`Weighted Annual Food Budget Shortfall`)) + geom_point() + ggtitle("Minimum food budget in Sacramento county over time") + xlab("year over time") + ylab("food budget")
+```
+
+```{r}
+LAfoodin %>% ggplot(aes(year,`Weighted Annual Food Budget Shortfall`)) + geom_point() + ggtitle("Minimum food budget in Los Angeles county over time") + xlab("year over time") + ylab("food budget")
+```
+
 
 
 
