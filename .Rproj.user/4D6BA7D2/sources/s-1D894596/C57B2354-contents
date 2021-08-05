@@ -1,0 +1,51 @@
+---
+title: "Commute Data Bicycle"
+author: "Stuart Suwabe and Jason Cheng and Bea McKenzie"
+date: "10/5/2020"
+output: html_document
+---
+
+```{r load the data}
+library(tidyverse)
+
+commute <- read_rds(url("http://data.cwick.co.nz/commute.rds"))
+# a subset of states for class
+states <- c("or", "ak", "ca", "wa", "id", "nv")
+commute_nw <- filter(commute, state %in% states)
+
+```
+
+```{r plot the original plot}
+ggplot(commute_nw) +
+  geom_bar(aes(x = "", y = prop, fill = factor(transport_type)), 
+           stat = "identity", width = 1) +
+  facet_wrap(~ state_name) +
+  coord_polar(theta = "y") +
+  theme_minimal(18) + 
+  xlab("") + ylab("") +
+  theme(axis.text = element_blank())
+
+```
+
+```{r replot it to make it better}
+ggplot(commute_nw) +
+  geom_bar(aes(x = "", y = prop, fill = factor(state)), 
+           stat = "identity", width = 1, position = "dodge") +
+  facet_wrap(~ transport_type, scales = "free") +
+  theme_minimal(18) + 
+  xlab("") + ylab("") +
+  theme(axis.text = element_blank()) 
+```
+
+```{r filter for bicycle}
+commute_nw_b <- commute_nw %>%
+  filter(transport_type == "Bicycle")
+
+ggplot(commute_nw_b) +
+  geom_bar(aes(x = "", y = prop, fill = factor(state)), 
+           stat = "identity", width = 1, position = "dodge") +
+  facet_wrap(~ transport_type, scales = "free") +
+  theme_minimal(18) + 
+  xlab("") + ylab("") +
+  theme(axis.text = element_blank()) 
+```

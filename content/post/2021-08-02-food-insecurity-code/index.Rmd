@@ -1,0 +1,70 @@
+---
+title: Food Insecurity Code - The Setup 
+author: R package build
+date: '2021-08-02'
+slug: food-insecurity-code
+categories:
+  - R
+tags:
+  - R Markdown
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+
+foodin19 <- read_excel("~/Downloads/Map the Meal Gap Data/MMG2021_2019Data_ToShare.xlsx", sheet = "2019 County")
+foodin19a <- foodin19 %>% rename(county = `County, State`, insecure_percen = `2019 Food Insecurity Rate`, insecure_num = `# of Food Insecure Persons in 2019`, insecure_low_income = `% FI ≤ Low Threshold`, insecure_btwn_income = `% FI Btwn Thresholds`, insecure_high_income = `% FI > High Threshold`, insecure_child_percen = `2019 Child food insecurity rate`, insecure_child_num = `# of Food Insecure Children in 2019`, child_below_poverty_percen = `% food insecure children in HH w/ HH incomes below 185 FPL in 2019`, child_above_poverty_percen = `% food insecure children in HH w/ HH incomes above 185 FPL in 2019`, secure_meal_value = `2019 Cost Per Meal`)  %>% filter(State == "CA") %>% mutate(population = round(insecure_num / insecure_percen, digits = 0))
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+# census_api_key("41dcf38aad5e9257d3d377a226d8f5ce88274d23", install = TRUE) 
+
+PubTransBelPov <- get_acs(geography = "county", variables = "B08122_014", state = "CA", year = 2019)
+PubTransBelPov1 <- PubTransBelPov %>% rename(county = NAME, PubTransBelPov = estimate) %>% select(county, PubTransBelPov)
+PubTransInPov <- get_acs(geography = "county", variables = "B08122_015", state = "CA", year = 2019)
+PubTransInPov1 <- PubTransInPov %>% rename(county = NAME, PubTransInPov = estimate) %>% select(county, PubTransInPov)
+# number of people in poverty that take public transportation
+
+PubTransPov <- merge(PubTransBelPov1, PubTransInPov1, by = "county")
+PubTransData <- PubTransPov %>% mutate(PubTransPov = PubTransBelPov + PubTransInPov) %>% select(c(county, PubTransPov))
+
+FoodAssist <- get_acs(geography = "county", variables = "B09010_002", state = "CA", year = 2019)
+FoodAssist1 <- FoodAssist %>% rename(county = NAME, FoodAssist = estimate) %>% select(county, FoodAssist)
+# number of people who rely on SSI, food stamps, or other support
+
+EduHSBelow <- get_acs(geography = "county", variables = "B06009_002", state = "CA", year = 2019)
+EduHSBelow1 <- EduHSBelow %>% rename(county = NAME, EduHSBelow = estimate) %>% select(county, EduHSBelow)
+# number of people not graduated high school
+
+EduHSGrad <- get_acs(geography = "county", variables = "B06009_003", state = "CA", year = 2019)
+EduHSGrad1 <- EduHSGrad %>% rename(county = NAME, EduHSGrad = estimate) %>% select(county, EduHSGrad)
+# number of people who graduated high school
+
+EduSomeCol <- get_acs(geography = "county", variables = "B06009_004", state = "CA", year = 2019)
+EduSomeCol1 <- EduSomeCol %>% rename(county = NAME, EduSomeCol = estimate) %>% select(county, EduSomeCol)
+# number of people with some college
+
+EduBach <- get_acs(geography = "county", variables = "B06009_005", state = "CA", year = 2019)
+EduBach1 <- EduBach %>% rename(county = NAME, EduBach = estimate) %>% select(county, EduBach)
+# number of people with a Bachelor's Degree
+
+x19test2 <- merge(foodin19a, PubTransData, by = "county")
+x19test3 <- merge(x19test2, FoodAssist1, by = "county")
+x19test4 <- merge(x19test3, EduHSBelow1, by = "county")
+x19test5 <- merge(x19test4, EduHSGrad1, by = "county")
+x19test6 <- merge(x19test5, EduSomeCol1, by = "county")
+x19test7 <- merge(x19test6, EduBach1, by = "county")
+
+foodinca <- x19test7[-c(1:3,6:9,11,12,16)]
+
+foodinca$pantry_num <- c(20,20,15,49,15,6,54,8,12,41,8,16,13,17,30,28,38,7,30,10,11,3,10,8,4,11,30,9,10,95,33,9,41,37,6,111,39,30,42,42,12,53,25,13,11,5,5,25,16,30,14,3,4,21,11,190,60,12)
+```

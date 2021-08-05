@@ -1,0 +1,10 @@
+"0","# census_api_key(""41dcf38aad5e9257d3d377a226d8f5ce88274d23"", install = TRUE) "
+"0",""
+"0","PubTransBelPov <- get_acs(geography = ""county"", variables = ""B08122_014"", state = ""CA"", year = 2019)"
+"2","Getting data from the 2015-2019 5-year ACS
+"
+"2","Using FIPS code '06' for state 'CA'
+"
+"2","Error in curl::curl_fetch_memory(url, handle = handle) : 
+  Timeout was reached: [api.census.gov] Resolving timed out after 10000 milliseconds
+"

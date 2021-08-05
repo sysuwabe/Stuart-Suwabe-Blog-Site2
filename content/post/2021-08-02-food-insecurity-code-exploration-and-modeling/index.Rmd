@@ -1,0 +1,47 @@
+---
+title: Food Insecurity Code - Exploration and Modeling
+author: R package build
+date: '2021-08-02'
+slug: food-insecurity-code-exploration-and-modeling
+categories:
+  - R
+tags:
+  - R Markdown
+  - regression
+---
+
+```{r pressure, echo=FALSE}
+foodincaPercen <- foodinca %>% 
+  mutate(PubTransPov = PubTransPov / population) %>%
+  mutate(FoodAssist = FoodAssist / population) %>% 
+  mutate(EduHSBelow = EduHSBelow / population) %>% 
+  mutate(EduHSGrad = EduHSGrad / population) %>% 
+  mutate(EduSomeCol = EduSomeCol / population) %>% 
+  mutate(EduBach = EduBach / population) %>% 
+  select(-c(2,5,9,17))
+
+foodincaNum <- foodinca %>% 
+  mutate(child_below_poverty_percen = child_below_poverty_percen * insecure_child_num) %>% # even though it says percen, treat it as a number, not a percentage 
+  mutate(insecure_low_income = insecure_low_income * population) %>%
+  select(-c(1,4,9,17))
+```
+
+```{r}
+set.seed(504)
+m2 <- train(insecure_num ~ .,
+            data = foodincaNum, 
+            method = "lm", 
+            trControl = trainControl(number = 1),
+            preProcess = c("BoxCox", "center", "scale"))
+
+summary(m2)
+
+library(modelr)
+rmse(m2, foodincaNum) 
+```
+
+
+
+
+
+

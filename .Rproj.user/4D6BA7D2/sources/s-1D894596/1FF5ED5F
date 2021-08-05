@@ -1,0 +1,32 @@
+{
+    "id": "1FF5ED5F",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1627874439307.0,
+    "source_on_save": false,
+    "relative_order": 13,
+    "properties": {
+        "expression": "foodinca",
+        "caption": "foodinca",
+        "totalObservations": "58",
+        "displayedObservations": "58",
+        "variables": "17",
+        "cacheKey": "DB9F510D",
+        "object": "foodinca",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=foodinca&cache_key=DB9F510D&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 4488742710,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1627874439307,
+    "read_only": false,
+    "read_only_alternatives": []
+}

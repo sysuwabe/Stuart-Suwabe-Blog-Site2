@@ -1,0 +1,1 @@
+"0","SCfoodin %>% ggplot(aes(year,`Weighted Annual Food Budget Shortfall`)) + geom_point() + ggtitle(""Minimum food budget in Sacramento county over time"") + xlab(""year over time"") + ylab(""food budget"")"

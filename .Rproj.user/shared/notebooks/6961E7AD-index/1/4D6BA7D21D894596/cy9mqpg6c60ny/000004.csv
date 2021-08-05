@@ -1,0 +1,1 @@
+"0","SCfoodin %>% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle(""Price of a meal in Sacramento county increases over time"") + xlab(""year over time"") + ylab(""food insecurity percentage"")"
