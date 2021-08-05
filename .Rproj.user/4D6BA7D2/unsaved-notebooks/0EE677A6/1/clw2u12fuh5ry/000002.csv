@@ -1,3 +1,0 @@
-"0","ggplot(foodin4, aes(child_above_poverty_percen, region)) +"
-"0","  stat_summary(geom = ""bar"", fun = ""mean"")"
-"0",""

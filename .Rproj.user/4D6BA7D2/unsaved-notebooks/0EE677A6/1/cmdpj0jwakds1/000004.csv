@@ -1,3 +1,0 @@
-"0","foodin4 <- foodin3 %>%"
-"0","  mutate(population = round(insecure_num / insecure_percen, digits = 0))"
-"0","View(foodin4)"

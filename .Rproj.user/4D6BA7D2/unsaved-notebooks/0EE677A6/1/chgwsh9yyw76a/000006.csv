@@ -1,1 +1,0 @@
-"0","ggplot(foodin4, aes(child_below_poverty_percen, insecure_child_num, color = region)) + geom_point() + ylim(0,100000) + facet_wrap(~region)"

@@ -1,4 +1,0 @@
-"0","foodin4 <- within(foodin3, state <- factor(state, levels = names(sort(table(state),decreasing = TRUE))))"
-"0",""
-"0","ggplot(foodin3, aes(fct_reorder(state, insecure_percen), insecure_percen, fill = region)) +"
-"0","  stat_summary(geom = ""bar"", fun = ""mean"") + coord_flip()"
