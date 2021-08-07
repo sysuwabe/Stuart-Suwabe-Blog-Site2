@@ -1,11 +1,12 @@
 ---
-title: "Food Insecurity Code - Over the Years"
-author: "R package build"
+title: Food Insecurity Code - Over the Years
+author: R package build
 date: '2021-08-02'
-slug: food-insecurity-code-over-the-years
-categories: R
+categories:
+  - R
 tags:
-- R Markdown
+  - R Markdown
+slug: food-insecurity-code-over-the-years
 ---
 
 ## Over the Years

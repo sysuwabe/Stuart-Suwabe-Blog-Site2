@@ -1,10 +1,12 @@
 ---
 title: 'Food Insecurity: What can we do?'
-author: "R package build"
+author: R package build
 date: '2021-08-02'
+categories:
+  - R
+tags:
+  - R Markdown
 slug: food-insecurity-what-can-we-do
-categories: R
-tags: R Markdown
 ---
 
 ![](images/feeding-america.png.webp)

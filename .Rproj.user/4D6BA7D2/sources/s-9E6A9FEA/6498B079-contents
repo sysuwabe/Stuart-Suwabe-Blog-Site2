@@ -1,10 +1,13 @@
 ---
-title: "Food Insecurity Code - Analysis"
-author: "R package build"
+title: Food Insecurity Code - Analysis
+author: R package build
 date: '2021-08-04'
+categories:
+  - R
+tags:
+  - regression
+  - R Markdown
 slug: food-insecurity-code-analysis
-categories: R
-tags: R
 ---
 
 ```{r setup, include=FALSE}
