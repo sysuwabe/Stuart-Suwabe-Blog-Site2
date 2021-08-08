@@ -1,0 +1,2 @@
+"0","foodincaNum %>% ggplot(aes(log(insecure_num))) + geom_histogram(bins = 25)"
+"0",""

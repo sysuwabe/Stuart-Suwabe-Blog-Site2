@@ -146,5 +146,39 @@ foodincaPercen %>% ggplot(aes(insecure_percen, EduHSBelow + EduHSGrad)) + geom_p
 foodincaNum %>% ggplot(aes(insecure_num, EduHSBelow + EduHSGrad)) + geom_point()
 ```
 
-From all of this analysis, if I were to model the data sets, I would probably remove Los Angeles entirely. As an outlier, it would skew the data into its favor. 
+Loa Angeles is a clear outlier in the numeric data set, while not being as prevalent in the percentage data set. I should look at a histogram. 
+
+```{r}
+foodincaPercen %>% ggplot(aes(insecure_percen)) + geom_histogram(bins = 25)
+
+```
+```{r}
+foodincaNum %>% ggplot(aes(insecure_num)) + geom_histogram(bins = 25)
+
+```
+
+Yeah... especially for numeric data set, the frequency is skewed towards the left. 
+
+
+```{r}
+foodincaPercen %>% ggplot(aes(log(insecure_percen))) + geom_histogram(bins = 25)
+```
+
+```{r}
+foodincaNum %>% ggplot(aes(log(insecure_num))) + geom_histogram(bins = 25)
+```
+
+The frequency of both data set while having the output logged has led to a more even distribution. I should have this in my model. 
+
+
+
+
+
+
+
+
+
+
+
+
 

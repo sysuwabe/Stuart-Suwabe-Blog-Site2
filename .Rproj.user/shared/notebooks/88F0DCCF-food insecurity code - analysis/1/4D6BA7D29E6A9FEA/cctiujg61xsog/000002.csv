@@ -1,0 +1,7 @@
+"0","percen_index <- createDataPartition(foodincaPercen1$l_insecure_percen, p = 0.7, list = FALSE)"
+"0","percen_tr <- foodincaPercen1[ percen_index, ]"
+"0","percen_te <- foodincaPercen1[-percen_index, ]"
+"0",""
+"0","num_index <- createDataPartition(foodincaNum1$l_insecure_num, p = 0.7, list = FALSE)"
+"0","num_tr <- foodincaNum1[ num_index, ]"
+"0","num_te <- foodincaNum1[-num_index, ]"

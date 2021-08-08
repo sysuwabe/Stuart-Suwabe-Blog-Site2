@@ -63,12 +63,12 @@ foodinca$pantry_num <- c(20,20,15,49,15,6,54,8,12,41,8,16,13,17,30,28,38,7,30,10
 ```
 
 
-After my exploratory data analysis, I decided to remove Los Angeles county from the data sets. 
+After my exploratory data analysis, I decided to log my output variable for both data sets. 
 
 ```{r}
-foodincaPercen1 <- foodincaPercen[-c(19)]
+foodincaPercen1 <- foodincaPercen %>% mutate(l_insecure_percen = log(insecure_percen)) %>% select(-c(1,3,4)) 
 
-foodincaNum1 <- foodincaNum[-c(19)]
+foodincaNum1 <- foodincaNum %>% mutate(l_insecure_num = log(insecure_num)) %>% select(-c(1,3,4))
 ```
 
 # Percentage model
@@ -78,7 +78,7 @@ library(caret)
 control <- trainControl(method = "boot", number = 5)
 
 set.seed(504)
-m1 <- train(insecure_percen ~ .,
+m1 <- train(l_insecure_percen ~ .,
             data = foodincaPercen1, 
             method = "lm", 
             trControl = control,
@@ -87,14 +87,14 @@ m1 <- train(insecure_percen ~ .,
 summary(m1)
 
 library(modelr)
-rmse(m1, foodincaPercen) 
+rmse(m1, foodincaPercen1) 
 ```
 
 
 # Numeric model
 ```{r}
 set.seed(504)
-m2 <- train(insecure_num ~ .,
+m2 <- train(l_insecure_num ~ .,
             data = foodincaNum1, 
             method = "lm", 
             trControl = control,
@@ -103,33 +103,33 @@ m2 <- train(insecure_num ~ .,
 summary(m2)
 
 library(modelr)
-rmse(m2, foodincaNum) 
+rmse(m2, foodincaNum1) 
 ```
 
 Before I jump to conclusions, I should partition the data as well, working on smaller parts of the data set. 
 
 ```{r}
-percen_index <- createDataPartition(foodincaPercen1$insecure_percen, p = 0.7, list = FALSE)
+percen_index <- createDataPartition(foodincaPercen1$l_insecure_percen, p = 0.7, list = FALSE)
 percen_tr <- foodincaPercen1[ percen_index, ]
 percen_te <- foodincaPercen1[-percen_index, ]
 
-num_index <- createDataPartition(foodincaNum1$insecure_num, p = 0.7, list = FALSE)
-num_tr <- foodincaNum1[ percen_index, ]
-num_te <- foodincaNum1[-percen_index, ]
+num_index <- createDataPartition(foodincaNum1$l_insecure_num, p = 0.7, list = FALSE)
+num_tr <- foodincaNum1[ num_index, ]
+num_te <- foodincaNum1[-num_index, ]
 ```
 
 
 # Percentage model - partitioned
 ```{r}
 set.seed(504)
-m3 <- train(insecure_percen ~ .,
+m3 <- train(l_insecure_percen ~ .,
             data = percen_tr, 
             method = "lm", 
             trControl = control,
             preProcess = c("BoxCox", "center", "scale"))
 
 percen_pred <- predict(m3, percen_te)
-postResample(pred = percen_pred, obs = percen_te$insecure_percen)
+postResample(pred = percen_pred, obs = percen_te$l_insecure_percen)
 ```
 
 ```{r}
@@ -139,14 +139,14 @@ summary(m3)
 # Numeric model - partitioned
 ```{r}
 set.seed(504)
-m4 <- train(insecure_num ~ .,
+m4 <- train(l_insecure_num ~ .,
             data = num_tr, 
             method = "lm", 
             trControl = control,
             preProcess = c("BoxCox", "center", "scale"))
 
 num_pred <- predict(m4, num_te)
-postResample(pred = num_pred, obs = num_te$insecure_num)
+postResample(pred = num_pred, obs = num_te$l_insecure_num)
 ```
 
 ```{r}
