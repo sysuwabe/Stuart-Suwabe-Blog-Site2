@@ -1,0 +1,25 @@
+{
+    "id": "43C5761A",
+    "path": "~/ML Bagging and Boosting Lesson.Rmd",
+    "project_path": null,
+    "type": "r_markdown",
+    "hash": "1991934810",
+    "contents": "",
+    "dirty": false,
+    "created": 1628394474728.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "cursorPosition": "105,0",
+        "scrollLine": "107",
+        "last_setup_crc32": ""
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1626914536,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626914536,
+    "read_only": false,
+    "read_only_alternatives": []
+}
