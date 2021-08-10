@@ -1,3 +1,0 @@
-"0","foodincaPercen1 <- foodincaPercen %>% mutate(l_insecure_percen = log(insecure_percen)) %>% select(-c(1,3,4)) "
-"0",""
-"0","foodincaNum1 <- foodincaNum %>% mutate(l_insecure_num = log(insecure_num)) %>% select(-c(1,3,4))"

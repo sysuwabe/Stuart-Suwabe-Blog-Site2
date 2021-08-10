@@ -3,9 +3,9 @@
     "path": "~/Desktop/Food insecurity code - setup and exploration.Rmd",
     "project_path": null,
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "1723102446",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1627950664100.0,
     "source_on_save": false,
     "relative_order": 5,
@@ -15,11 +15,11 @@
         "last_setup_crc32": "9E6A9FEA908c004b"
     },
     "folds": "",
-    "lastKnownWriteTime": 1628369534,
+    "lastKnownWriteTime": 1628546565,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1628373007945,
+    "last_content_update": 1628546565149,
     "read_only": false,
     "read_only_alternatives": []
 }

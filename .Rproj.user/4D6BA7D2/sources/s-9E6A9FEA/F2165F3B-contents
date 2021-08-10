@@ -1,0 +1,281 @@
+---
+title: "Time Series Final Project"
+author: "Stuart Suwabe"
+date: "4/16/2021"
+output: html_document
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(quantmod)
+library(fable)
+library(fabletools)
+library(feasts)
+library(tsibble)
+library(tidyquant)
+library(magrittr)
+library(ggfortify)
+library(purrr)
+library(seasonal)
+library(forcats)
+library(forecast)
+AMZN_2 <- read_csv("Downloads/AMZN-2.csv")
+
+# Because R does not like dealing with missing values, I had to fill in missing data...
+amz_fill <- AMZN_2 %>% complete(Date = seq.Date(min(Date), max(Date), by="day"))
+filled <- amz_fill %>% fill(`Close`)
+
+# I'm gonna predict for March 2020, the month with the announcement of the pandemic...
+## This data set is for the modeling. 
+amazon <- filled %>%
+  filter(Date >= "2018-01-01", Date <= "2020-02-28")
+amazon_ts <- as_tsibble(amazon) %>% select(Date, Close)
+
+# This data set will be saved for the end, to look over 
+amazon_f <- filled %>%
+  filter(Date >= "2018-01-01", Date <= "2020-04-30")
+amazon_ts_f <- as_tsibble(amazon_f) %>% select(Date, Close)
+```
+
+## Going Over the Data
+
+```{r}
+amazon_ts %>% autoplot() +
+labs(title = "Closing Stock Prices of Amazon", y = "Closing Prices")
+# There is a small drop in early 2018 and massive drops later.
+# Instead of rising, stock remains mostly stagnant, going back and forth. 
+
+amazon_ts %>%
+  gg_season(Close, labels = "both") +
+  labs(y = "stock prices",
+       title = "Closing Stock Prices of Amazon")
+# The small drop happens in April. This occurred due to president Trump's verbal attack on Twitter against Amazon. 
+# The big drop begins around October. This time was plagued with worries of the US-China trade war, high interest rates, and the rate of economic growth reaching its peak.  
+# The fluctuation of 2019 is due to Amazon's focus on growth over profit no longer enticing traders to invest. Maybe it's because of 2018, but no more hyper growth here. 
+
+```
+
+```{r}
+# Autocorrelation
+amazon_ts %>%
+  gg_tsdisplay(Close, plot_type = 'partial', lag=36)
+## it is clear that the data is non-stationary
+```
+
+```{r}
+# What kind of transformation do we need? 
+amazon_ts %>%
+  features(Close, features = list(var_tiled_mean, var_tiled_var, unitroot_kpss, unitroot_ndiffs, guerrero))
+# mean is close to one and variance is close to 0, doesn't necessarily need Box-Cox, I think... could be nice to have
+## lambda = -0.18 for Box-Cox Transformation, I should compare the data with and without it. 
+# ndiffs = 1, I'll have to see how a difference works. 
+
+amazon_ts %>%
+  gg_tsdisplay(difference(Close), plot_type = 'partial', lag=36)
+# these are the differences between consecutive observations; there isn't much alike here, thus the stock prices are independent of each other. 
+# though there are multiple lags that go outside of the dotted line, I'm inclined to say that one difference has allowed for a more stationary time series than before. 
+# PACF is the correlation of residuals: honestly looks very similar to the ACF plot.
+```
+
+```{r}
+lambdA <- amazon_ts %>% 
+  features(Close, features = guerrero) %>%
+  pull(lambda_guerrero)
+
+amazon_ts %>%
+  gg_tsdisplay(difference(box_cox(Close, lambdA)), plot_type = 'partial', lag=36)
+# There did not seem to be much difference in my Box-Cox transformation, so I don't think I need it. I should keep it in mind, just in case. 
+# ACF and PACF both spike at a lag of 3. I should use those in my models. 
+
+# Look at seasonal lags...
+amazon_ts %>%
+  gg_tsdisplay(difference(Close, 12) %>% difference(), plot_type = 'partial', lag=36)
+# seasonal MA(1), I believe 
+```
+
+```{r}
+amazon_ts %>% features(Close, feat_stl)
+# trend strength: 0.9903642, there seems to be a lot of trend
+# seasonal strength week: 0.1455484, there seems to be little seasonality
+```
+
+
+## Decomposition
+
+```{r pressure, echo=FALSE}
+# Decomposition...
+amazon_ts %>%
+  model(
+    STL(Close ~ trend(window = 13) + # number of consecutive observations used when estimating trend-cycle
+                   season(window = "periodic"))) %>% # number of consecutive years to use in estimating each value in seasonal component
+          components() %>% 
+          autoplot()
+# the trend shows the aforementioned drops within 2018, and how 2019 onward has kept the prices relatively stable instead of the increases that existed before. It shows in the remainder department as well. 
+# for seasonality, highs are in the summer months after a seeming drop in late spring, and there is a massive spike in late autumn, around Thanksgiving, maybe? 
+# what is called season_week I am unfamiliar with. However, compared to the others, its variation is the smallest. Both season_year and remainder are tied, and are bigger than Close and trend. 
+```
+
+
+
+## Models
+
+### Having looked at the ACF and PACF plots above, there is a notable spike on day 3, so my ARIMA models will focus on that. I believe I am also seeing a seasonal MA(1), so I'll have to factor that in. 
+### As well, though I decided against Box_cox transformation, I should use it anyway to see what happens. 
+
+```{r}
+Amz_fit <- amazon_ts %>%
+  model(arima013011 = ARIMA(Close ~ pdq(0,1,3) + PDQ(0,1,1)), 
+        arima310011 = ARIMA(Close ~ pdq(3,1,0) + PDQ(0,1,1)), 
+        stepwise = ARIMA(Close),
+        auto = ARIMA(Close, stepwise = FALSE, approx = FALSE),
+        b_arima013011 = ARIMA(box_cox(Close,lambdA) ~ pdq(0,1,3) + PDQ(0,1,1)), 
+        b_arima310011 = ARIMA(box_cox(Close,lambdA) ~ pdq(3,1,0) + PDQ(0,1,1)), 
+        sb_tepwise = ARIMA(box_cox(Close,lambdA)),
+        b_auto = ARIMA(box_cox(Close,lambdA), stepwise = FALSE, approx = FALSE)) 
+report(Amz_fit)
+```
+### Looking at the AICc, the very first model with pdq(0,1,3) has the lowest model. Of the Box_Cox transformations specifically, the very similar model like before has the smallest AICc as well. My first model will be my forecasting choice, it seems. 
+
+```{r}
+accuracy(Amz_fit)
+# lowest RMSE goes to the first model with the Box-Cox transformation. Though without the transformation, the model is still pretty fine. The other specifically chosen ARIMA model and its Box-Cox counterpart certainly are pretty close as well. I think my forecasting choice remains the same. 
+```
+### Looking at the chosen model a bit closer now...
+```{r}
+fit <- amazon_ts %>% 
+  model(ARIMA(Close ~ pdq(0,1,3) + PDQ(0,1,1)))
+report(fit)
+```
+
+```{r}
+fit %>% gg_tsresiduals(lag_max = 30)
+# one real significant spike in the ACF, seems rather white-noise-y 
+```
+
+```{r}
+augment(fit) %>%
+  features(.innov, ljung_box, lag = 60, dof = 4)
+# p-value is above 0.05, so it isn't significant. The model seems autocorrelated...
+```
+
+## Training and Testing
+
+```{r}
+# Training and test data with the dataset. 
+train <- amazon_ts %>%
+  filter_index("2018-01-01" ~ "2019-10-31")
+test <- amazon_ts %>%
+  filter_index("2019-11-01" ~ .)
+```
+
+### I think it important to look at all of the models under this training and testing set, to witness any changes. 
+
+```{r}
+fit2 <- train %>%
+  model(arima013011 = ARIMA(Close ~ pdq(0,1,3) + PDQ(0,1,1)), 
+        arima310011 = ARIMA(Close ~ pdq(3,1,0) + PDQ(0,1,1)), 
+        stepwise = ARIMA(Close),
+        auto = ARIMA(Close, stepwise = FALSE, approx = FALSE),
+        b_arima013011 = ARIMA(box_cox(Close,lambdA) ~ pdq(0,1,3) + PDQ(0,1,1)), 
+        b_arima310011 = ARIMA(box_cox(Close,lambdA) ~ pdq(3,1,0) + PDQ(0,1,1)), 
+        sb_tepwise = ARIMA(box_cox(Close,lambdA)),
+        b_auto = ARIMA(box_cox(Close,lambdA), stepwise = FALSE, approx = FALSE)) 
+
+cast <- fit2 %>% 
+  forecast(h = 60, new_data = test)
+
+cast %>% accuracy(test)
+# The first model has the smallest RMSE and MAE.  
+```
+```{r}
+cast %>%
+  autoplot(amazon_ts %>%
+             filter(Date > as.Date("2019-11-01")), level = NULL)
+# The forecasts aren't as good as I hoped they would be...
+```
+### Splitting up the graph...
+```{r}
+cast %>%
+  autoplot(amazon_ts %>%
+             filter(Date > as.Date("2019-11-01")), level = NULL) + facet_wrap(~ .model) 
+# With faceting separating them all, the first two models without Box-Cox transformation seem to be the closest to the forecast. 
+```
+
+### Let's look at our chosen models specfically. 
+```{r}
+fit2 %>%
+    select(arima013011) %>%
+    augment() %>%
+    ACF(.resid) %>%
+    autoplot()
+```
+
+```{r}
+fit2 %>%
+    select(arima310011) %>%
+    augment() %>%
+    ACF(.resid) %>%
+    autoplot()
+```
+## They are both very close, though I think I'll ultimately choose my first, original model. 
+
+```{r}
+# Let's check a median forecast
+fit_final <- train %>%
+  model(arima013011 = ARIMA(Close ~ pdq(0,1,3) + PDQ(0,1,1))) 
+
+m_cast <- fit_final %>%
+  forecast(h = 120, point_forecast = list(.median = median), simulate = TRUE, bootstrap = TRUE, times = 100)
+
+m_cast %>% accuracy(test)
+```
+### Utilizing the median values via a point forecast gives our model a lower MAE than without it. RMSE is also smaller 
+
+```{r}
+m_cast %>%
+  autoplot(amazon_ts %>%
+             filter(Date > as.Date("2019-11-01"), Date < as.Date("2020-02-28")), level = NULL)
+```
+
+```{r}
+# I want to compare this median forecast with my original forecast. 
+
+fit_final2 <- train %>%
+  model(arima013011 = ARIMA(Close ~ pdq(0,1,3) + PDQ(0,1,1)))
+
+o_cast <- fit_final2 %>% 
+  forecast(h = 120, new_data = test)
+  
+o_cast %>%
+  autoplot(amazon_ts %>%
+             filter(Date > as.Date("2019-11-01"), Date < as.Date("2020-02-28")), level = NULL)
+```
+### As shown, both models are very close to each other. I may have to use the median point forecast for my actual forecast. 
+
+```{r}
+# Final Forecast, for realsies! 
+
+FFS_cast <- amazon_ts %>%
+  model(arima013011 = ARIMA(Close ~ pdq(0,1,3) + PDQ(0,1,1))) %>%
+  forecast(h = 60, point_forecast = list(.median = median), simulate = TRUE, bootstrap = TRUE, times = 100) 
+
+FFS_cast %>%
+  autoplot(amazon_ts_f %>%
+             filter(Date > as.Date("2019-12-01")))
+```
+
+### As the STL has shown, spring usually is where Amazon stocks have a slow increase in price. March 13 would be when COVID would be announced as a national emergency in the United States, which would most definitely make lots of stocks suffer, including Amazon. Then, in April, we see stock prices skyrocket. 
+
+```{r}
+autoplot(as_tsibble(filled) %>%
+           filter(Date > "2017-02-01", Date < "2017-06-01"))
+
+autoplot(amazon_ts %>%
+           filter(Date > "2018-02-01", Date < "2018-06-01"))
+
+autoplot(amazon_ts %>%
+           filter(Date > "2019-02-01", Date < "2019-06-01"))
+```
+### As shown by prior years with a similar time span, 2017 and 2019 shows this slow increase. 2018 has a drop, though as explained earlier, this was due to Trump's tweets against Amazon, which has had good growth before hand. 
+

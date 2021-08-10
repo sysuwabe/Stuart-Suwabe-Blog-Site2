@@ -1,0 +1,32 @@
+{
+    "id": "2F892FF9",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1628553185255.0,
+    "source_on_save": false,
+    "relative_order": 12,
+    "properties": {
+        "expression": "num_tr",
+        "caption": "num_tr",
+        "totalObservations": 43,
+        "displayedObservations": 43,
+        "variables": 11,
+        "cacheKey": "6F92DDC8",
+        "object": "num_tr",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=num_tr&cache_key=6F92DDC8&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 0,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1628553185255,
+    "read_only": false,
+    "read_only_alternatives": []
+}

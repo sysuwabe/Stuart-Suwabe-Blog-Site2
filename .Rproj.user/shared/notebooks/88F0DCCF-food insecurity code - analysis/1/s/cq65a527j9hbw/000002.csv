@@ -1,0 +1,4 @@
+"0","food_pred <- predict(food_model_st_fit1, percen_te)"
+"0",""
+"0","food_results1 <- bind_cols(food_pred, percen_te %>% select(l_insecure_percen))"
+"0","head(food_results1)"
