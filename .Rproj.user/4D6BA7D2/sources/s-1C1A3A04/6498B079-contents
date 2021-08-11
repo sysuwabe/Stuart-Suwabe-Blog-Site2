@@ -1,0 +1,283 @@
+---
+title: Food Insecurity Code - Analysis
+author: R package build
+date: '2021-08-04'
+categories:
+  - R
+tags:
+  - regression
+  - R Markdown
+slug: food-insecurity-code-analysis
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidycensus)
+```
+
+
+After my exploratory data analysis, I decided to log my output variable for both data sets. 
+
+```{r}
+# I take out these columns because of potential leakage. 
+foodincaPercen1 <- foodincaPercen %>% mutate(l_insecure_percen = log(insecure_percen)) %>% rename(budget_shortfall = `2019 Weighted Annual Food Budget Shortfall`) %>% select(-c(1,3,4)) 
+
+foodincaNum1 <- foodincaNum %>% mutate(l_insecure_num = log(insecure_num)) %>% rename(budget_shortfall = `2019 Weighted Annual Food Budget Shortfall`) %>% select(-c(1,3,4))
+```
+
+# Percentage model
+```{r}
+library(caret)
+
+control <- trainControl(method = "boot", number = 5)
+
+set.seed(504)
+m1 <- train(l_insecure_percen ~ .,
+            data = foodincaPercen1, 
+            method = "lm", 
+            trControl = control,
+            preProcess = c("BoxCox", "center", "scale"))
+
+summary(m1)
+```
+
+
+# Numeric model
+```{r}
+set.seed(504)
+m2 <- train(l_insecure_num ~ .,
+            data = foodincaNum1, 
+            method = "lm", 
+            trControl = control,
+            preProcess = c("BoxCox", "center", "scale"))
+
+summary(m2)
+```
+
+Before I jump to conclusions, I should partition the data as well, working on smaller parts of the data set. 
+
+```{r}
+set.seed(504)
+percen_index <- createDataPartition(foodincaPercen1$l_insecure_percen, p = 0.7, list = FALSE)
+percen_tr <- foodincaPercen1[ percen_index, ]
+percen_te <- foodincaPercen1[-percen_index, ]
+
+set.seed(504)
+num_index <- createDataPartition(foodincaNum1$l_insecure_num, p = 0.7, list = FALSE)
+num_tr <- foodincaNum1[ num_index, ]
+num_te <- foodincaNum1[-num_index, ]
+```
+
+
+# Percentage model - partitioned
+```{r}
+set.seed(504)
+m3 <- train(l_insecure_percen ~ .,
+            data = percen_tr, 
+            method = "lm", 
+            trControl = control,
+            preProcess = c("BoxCox", "center", "scale"))
+
+percen_pred <- predict(m3, percen_te)
+postResample(pred = percen_pred, obs = percen_te$l_insecure_percen)
+```
+
+```{r}
+summary(m3)
+```
+
+# Numeric model - partitioned
+```{r}
+set.seed(504)
+m4 <- train(l_insecure_num ~ .,
+            data = num_tr, 
+            method = "lm", 
+            trControl = control,
+            preProcess = c("BoxCox", "center", "scale"))
+
+num_pred <- predict(m4, num_te)
+postResample(pred = num_pred, obs = num_te$l_insecure_num)
+```
+
+```{r}
+summary(m4)
+```
+
+
+# The conclusions
+
+The stars next to the coefficients showcase significant features towards the output that is the percentage of/the number of people who suffer from food insecurity. 
+
+For both percentage data models, the percentage of people in the counties' population that rely on food assistance like SNAPS or food stamps is the most statistically significant feature. Pantry number is also somewhat significant. 
+
+For both numerical data models, the most recurring significant features are the average price of a meal and the food budget shortfall. 
+
+Of these models, the secure_meal_value is seen as significant for them all. In the first model of the percentage data, if there is a 1 dollar increase in the secure meal value, there would be about a 18% decrease in the insecurity rate. The numeric data set has something similar, a 1 unit increase in the budget shortfall leads to an average... 159 to 165% increase in the food insecurity population? Well, as explained earlier in the exploratory data analysis, these larger meal values correlate with larger cities, which would have more resources to aid those suffering from hunger, but then more people suffering from hunger would be a part of those cities.
+
+The second percentage model would have a higher percentage of people with a Bachelor's Degree meaning an 17% decrease in the insecurity rate. The second numeric model sees that an increase in the number of people whose max education level is graduating high school means an 8% increase in the insecure population. 
+
+Okay, there are a couple issues with these models. That said, we can look at the less statistically adept features too. In both models, the percentage/number of people with only some high school decreases the insecurity rate/population, and those that graduated from high school lead to an average increase in the rate/population. This doesn't seem to make sense, doesn't it? Perhaps the "some high school" crowd are majorly children, linking children to food insecurity in a way? It may be a form of leakage. More adults would have been able to graduate high school though, so that could link to food insecurity with less leakage. 
+
+I'll approach these models again, but taking out the EduHSBelow feature. 
+
+
+## Approach these models from a TidyModels perspective
+```{r}
+
+foodincaPercen2 <- foodincaPercen1 %>% select(-c(EduHSBelow))
+foodincaNum2 <- foodincaNum1 %>% select(-c(EduHSBelow))
+
+library(tidymodels)
+
+set.seed(504)
+data_split <- initial_split(foodincaPercen2, prop = 3/4)
+percen_tr <- training(data_split)
+percen_te  <- testing(data_split)
+
+set.seed(504)
+data_split <- initial_split(foodincaNum2, prop = 3/4)
+num_tr <- training(data_split)
+num_te  <- testing(data_split)
+
+
+food_rec1 <- 
+  recipe(l_insecure_percen ~ ., data = percen_tr) %>% 
+  step_BoxCox(all_numeric(), -all_outcomes()) %>%
+  step_normalize(all_predictors())
+
+lm_spec <- 
+  linear_reg() %>% 
+  set_engine("lm")
+
+food_wflow <- 
+  workflow() %>% 
+  add_model(lm_spec) %>% 
+  add_recipe(food_rec1)
+
+food_fit1 <- fit(food_wflow, percen_tr)
+
+food_fit1 %>% 
+  pull_workflow_fit() %>% 
+  tidy() 
+
+```
+
+# Evaluate model with training data
+```{r}
+food_pred <- predict(food_fit1, percen_te %>% select(-l_insecure_percen)) 
+head(food_pred)
+```
+```{r}
+food_results1 <- bind_cols(food_pred, percen_te %>% select(l_insecure_percen))
+food_results1
+```
+
+```{r}
+ggplot(food_results1, aes(x = l_insecure_percen, y = .pred)) + 
+  geom_abline(lty = 2) + 
+  geom_point(alpha = 0.5) + 
+  labs(y = "Predicted log Insecurity Percentage", x = "log Insecurity Percentage") +
+  coord_obs_pred()
+```
+
+
+
+
+# And for the numeric data set
+```{r}
+food_rec2 <- 
+  recipe(l_insecure_num ~ ., data = num_tr) %>% 
+  step_BoxCox(all_numeric(), -all_outcomes()) %>%
+  step_normalize(all_predictors())
+
+food_wflow <- 
+  workflow() %>% 
+  add_model(lm_spec) %>% 
+  add_recipe(food_rec2)
+
+food_fit2 <- fit(food_wflow, num_tr)
+
+food_fit2 %>% 
+  pull_workflow_fit() %>% 
+  tidy() 
+```
+
+```{r}
+food_pred <- predict(food_fit2, num_te %>% select(-l_insecure_num)) 
+food_pred
+```
+```{r}
+food_results2 <- bind_cols(food_pred, num_te %>% select(l_insecure_num))
+food_results2
+```
+
+
+```{r}
+ggplot(food_results2, aes(x = l_insecure_num, y = .pred)) + 
+  geom_abline(lty = 2) + 
+  geom_point(alpha = 0.5) + 
+  labs(y = "Predicted log Insecure Population", x = "log Insecure Population") +
+  coord_obs_pred()
+```
+
+Taking out the EduHSBelow feature has led to some interesting results. The percentage model has a similar significant value in secure_meal_value and FoodAssist, with the latter telling that with a 1 unit increase in the percentage of those with food assistance, the insecurity rate increases by about 16%. The numeric data, meanwhile, holds a significant value in PubTransPov as well as secure_meal_value, where one more person in poverty taking public transportation means a 2% decrease in the food insecure population. 
+
+This... seems odd. So on average, in the numeric model, more people taking public transportation means less food insecure people? The percentage data model makes more sense, where more pantries mean a lesser insecurity rate. 
+
+# Conclusions
+
+I think I will use my second percentage model. The numeric models are skewed towards larger populations, especially with Los Angeles and its massive food insecure population, so they wouldn't be as trustworthy, and the first percentage model has a larger RSE (generally, the amount of error in the model) and smaller r-squared (the percentage of the data that fits the model). Let's review it once more, removing the EduHSBelow feature
+
+```{r}
+set.seed(504)
+data_split <- initial_split(foodincaPercen2, prop = 3/4)
+percen_tr <- training(data_split)
+percen_te  <- testing(data_split)
+
+set.seed(504)
+m5 <- train(l_insecure_percen ~ .,
+            data = percen_tr, 
+            method = "lm", 
+            trControl = control,
+            preProcess = c("BoxCox", "center", "scale"))
+
+percen_pred <- predict(m5, percen_te)
+postResample(pred = percen_pred, obs = percen_te$l_insecure_percen)
+```
+
+```{r}
+summary(m5)
+```
+
+The only significant features are FoodAssist and secure_meal_value. It seems EduHSBelow had quite the influence on this model. It will have to be something to keep in mind. 
+
+
+## Looking at some of the features...
+```{r}
+ggplot(percen_tr, aes(FoodAssist, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm')
+```
+
+
+```{r}
+ggplot(percen_tr, aes(PubTransPov, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm')
+```
+This is clearly skewed by some outliers... 
+
+```{r}
+test <- percen_tr %>% filter(PubTransPov <= 0.005)
+
+ggplot(test, aes(PubTransPov, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm')
+```
+There is a drop in the percentage with more people taking public transportation. This goes against the increase in the percentage found in the model. 
+
+
+```{r}
+ggplot(percen_tr, aes(EduHSGrad, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm')
+```
+
+The higher percentage of the population whose max level of education is graduating high school, the higher the insecurity rate. Seems obvious, but it's got its point: a higher education means less food insecurity. 
+
+
+
+

@@ -1,0 +1,5 @@
+"0","ggplot(food_results1, aes(x = l_insecure_percen, y = .pred)) + "
+"0","  geom_abline(lty = 2) + "
+"0","  geom_point(alpha = 0.5) + "
+"0","  labs(y = ""Predicted log Insecurity Percentage"", x = ""log Insecurity Percentage"") +"
+"0","  coord_obs_pred()"

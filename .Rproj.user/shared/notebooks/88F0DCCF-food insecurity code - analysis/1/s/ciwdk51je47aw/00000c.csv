@@ -1,2 +1,0 @@
-"0","food_pred <- predict(food_fit2, num_te %>% select(-l_insecure_num)) "
-"0","head(food_pred)"

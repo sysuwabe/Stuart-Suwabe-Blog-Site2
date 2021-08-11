@@ -1,0 +1,237 @@
+---
+title: "Mid-term"
+author: "Stuart Suwabe"
+date: "03/15/2021"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+---
+
+# 1. Setup (1pt)
+
+Add your name to the top of this file and change the below code so that you can successfully load the BankChurners data into memory.
+
+```{r setup, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+
+bank = read_rds("/Users/stuartsuwabe/Downloads/BankChurners.rds") 
+```
+
+
+# 2. Multiple Regression
+
+## 2.1. Run the model (2pts)
+
+Use the 'lm' function to run a linear regression model with the natural log of Total_Trans_Amt as the dependent variable and both Customer Age and Gender as predictors. Use the entire dataset (no need to split into test and training).
+
+```{r}
+m1 <- lm(log(Total_Trans_Amt) ~ Gender + Customer_Age, data = bank)
+```
+
+## 2.2. Interpretation (3pts)
+
+Explain the effect of both customer age and gender on total transaction amount. Use language that a non-technical manager can understand--ie. make sure you transform the coefficients so the effects are more intuitive.
+
+```{r}
+summary(m1)
+```
+
+**Answer:** If the gender is male, the total transaction amount is decreased. As well, as the customer gets older, the total amount of their transaction will also decrease. 
+
+# 2.3. Interactions (2pts)
+
+Use the 'train' function from the Caret library to run the same linear regression as above, but add an interaction between age and gender.
+
+*Note:* Use 'trControl = trainControl(method = "boot", number = 1)' for subsampling
+
+```{r}
+library(caret)
+
+trControl = trainControl(method = "boot", number = 1)
+
+fit <- train(log(Total_Trans_Amt) ~ Gender + Customer_Age + Gender*Customer_Age,
+            data = bank, 
+            method = "lm", 
+            trControl = trControl)
+
+summary(fit)
+```
+
+# 2.4. Interpretation (3pts)
+
+How should I interpret the coefficient on the interaction variable? Please explain as you would to a non-technical manager.
+
+**Answer:** The higher the customer's age, the total transaction amount will decrease. If the gender of the customer is male, the transaction will still decrease the older a customer gets, but not as much. 
+
+# 2.5. Bonus (1pt)
+
+Why did the coefficient on Gender turn positive after the interaction was included?
+
+**Answer:** Well, since there is another independent variable we are using to build this model on, I guess the interaction variable may have showed us a hidden insight into the data, where Gender was originally considered negative in correlation with Customer_Age.  
+
+
+# 3. Decision Trees
+
+## 3.1 Run the Model (2pts)
+
+Use the train function from the Caret library to run a basic decision tree model to determine whether a customer is likely to churn or not (i.e. the Churn column). Use the entire dataset and a fixed complexity parameter of 0.03.
+
+*Note:* Use 'trControl = trainControl(method = "boot", number = 1)' for subsampling
+
+```{r}
+trControl = trainControl(method = "boot", number = 1)
+
+fit <- train(Churn ~ ., data = bank,
+             method = "rpart",
+             trControl = trControl,
+             metric = "Kappa", 
+             tuneGrid = expand.grid(cp = 0.03))
+```
+
+## 3.2. Visualize (2pts)
+
+Plot the resulting tree using the rpart.plot function
+
+```{r}
+library(rpart)
+library(rpart.plot)
+
+rpart.plot(fit$finalModel, type = 5) 
+```
+
+## 3.3. Interpretation (3pts)
+
+Use the plot of your decision tree to construct a coherent sentence that explains the data in the right-most, bottom leaf of the tree.
+
+**Answer:** If the customer has less than 55 total transaction counts, and if their total revolving balance is less than 614, there is a 74% chance that the customer has indeed spurned. 
+
+
+# 4. Logistic Regression 
+
+## 4.1. Setup (1pt)
+
+Create a new variable called 'Churned' that is 1 if a customer churned and 0 otherwise, then delete the Churn column.
+
+```{r}
+bank1 <- bank %>%
+  mutate(Churned = ifelse(Churn == "yes", 1,0)) %>% 
+  select(-Churn)
+```
+
+## 4.2. Sampling (1pt)
+
+Set the random seed to 504 and then create training and test samples that are 60% and 40% of the full dataset respectively.
+
+```{r}
+set.seed(504)
+bank_index <- createDataPartition(bank1$Churned, p = 0.6, list = FALSE)
+train <- bank1[ bank_index, ]
+test <- bank1[-bank_index, ]
+```
+
+## 4.3. Subsampling (2pts)
+
+Given the size of this dataset, which subsampling routine would you suggest when training the model? Why?
+
+```{r}
+dim(train)
+dim(test)
+```
+
+**Answer:** The dataset altogether has 10127 observations and 20 columns. Even the training and test samples are pretty big. I think I'll use V-fold cross validation, which would allow me to train and test a number of subsets at once, to make sure I use all parts of the dataset. 
+
+## 4.4. Run the model (2pts)
+
+Use the train function from Caret to run a logistic regression model on the training data with 'Churned' as the dependent variable and all other variables as predictors.
+
+*Note:* Use 'trControl = trainControl(method = "boot", number = 1)' for subsampling
+
+```{r}
+trControl = trainControl(method = "cv", number = 5)
+
+fit2 <- train(Churned ~ ., 
+             data = train,
+             method = "glm",
+             family = "binomial",
+             trControl = trControl)
+```
+
+## 4.5. Interpretation (2pts)
+
+Which predictor (other than the intercept) is the most predictive and why? Just use odds or probability to justify your answer. You do not need to explain what the predictor is or speculate on why it affects the outcome. 
+
+```{r}
+summary(fit2)
+```
+
+**Answer:** I think Total_Revolving_Bal is the most predictice predictor, since it has the smallest coefficient possible amongst all the independent variables, yet is still statistically significant.
+
+## 4.6. Interpretation (2pts)
+
+Evaluate your logistic model against the test data and create a confusion matrix. Is this a good model? Why or why not.
+
+*Note:* Assume probabilities over 0.5 are equivalent to a positive prediction.
+
+```{r}
+prob <- predict(fit2, newdata = test)
+pred <- ifelse(prob > 0.5, 1, 0)
+
+confusionMatrix(factor(pred), factor(test$Churned))
+```
+
+**Answer:** With a Kappa of 0.6273, I'm leaning towards this being a rather decent model. This means that we perform a whopping 62.7% better than simply guessing if they'll churn or not. 
+
+## 4.7. Bonus (1pt)
+
+Assume that you wanted to use this model to reduce churn (i.e. customers leaving) at your bank. To do so, you intend to give likely churners a \$25 one-time promotion. If this is guaranteed to work, and the expected benefit of retention (not churning) is \$50, then at approximately what probability of churn should you offer the promotion?
+
+```{r}
+# I don't think I can answer this one...
+```
+
+**Answer:** 
+
+## 4.8. Feature Engineering (3pts)
+
+Engineer features and/or incorporate weighting to achieve a higher kappa score for your logistic regression model. Run your model on the full dataset (no splitting). Calculate Kappa assuming probability > 0.5 is a churned customer.
+
+**Scoring:** > 0.65 = 1pt, > 0.68 = 2pts, > 0.69 = 3pts.
+
+```{r}
+# Let's get some features in. 
+bank2 <- bank1 %>%
+  mutate(lamt = log(Total_Trans_Amt)) %>% 
+  mutate(lavg = log(Avg_Open_To_Buy)) %>% 
+  mutate(lct = log(Total_Trans_Ct)) 
+
+trControl = trainControl(method = "boot", number = 1)
+
+# No splitting: we die with the full dataset! 
+
+
+## Apparently, we were supposed to split 60-40
+set.seed(504)
+bank_index <- createDataPartition(bank2$Churned, p = 0.6, list = FALSE)
+train <- bank2[bank_index, ]
+test <- bank2[-bank_index, ]
+
+# There are over 5 times the amount of customers who have not churned compared to those that have. I should weight this, I think. 
+weight_train <- train %>% mutate(weights = case_when(
+  Churned == 1 ~ 1.62, Churned == 0 ~ 1)) # 1.5 was the optimal choice. 5 tanked the Kappa. 
+
+
+fit3 <- train(Churned ~ ., 
+             data = train,
+             method = "glm",
+             family = "binomial",
+             weights = weight_train$weights,
+             trControl = trControl)
+
+prob <- predict(fit3, newdata = test)
+pred <- ifelse(prob > 0.5, 1, 0)
+
+confusionMatrix(factor(pred), factor(test$Churned)) # Kappa: 0.694
+```

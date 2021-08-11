@@ -1,0 +1,94 @@
+---
+title: 'Food Insecurity: What can we do?'
+author: R package build
+date: '2021-08-02'
+categories:
+  - R
+tags:
+  - R Markdown
+slug: food-insecurity-what-can-we-do
+---
+
+![](images/feeding-america.png.webp)
+
+
+## The Pandemic's Food Pains 
+
+In the city of Marysville, every Friday morning at 10:00am, the First Presbyterian Church of Marysville opens up access to their food pantry. Alongside the wall of the tiny outlet, around the corner of the connected building, people both young and old, some with children, some with carts to hold their balance and their bags, all wait in line to receive their weekly groceries, the food they cannot reliably get on their own. After filling out a form, circling what food they would like from inside, they would be allowed, one at a time, into the small roped-off area, where they would fill up their bags and carts with produce graciously donated by the Yuba-Sutter Food Bank. 
+
+A young man at the entrance to the roped-off area, handing out disposable gloves and plastic bags for his customers' use, smiles and makes small talk with each needy individual, many of them offering thanks for his and everyone else hard work. And as the line peters out, he sighs, wiping the sweat from his brow as he stands in the open heat. Turning to an older woman beside him, a member of the church, he asks. 
+
+"How many new people?" The lady looks down at her clipboard before responding. 
+
+"Around four more new families this week." I shake my head. Just as it was last week, and the week before. 
+
+It wasn't until these hot summer months that I witnessed just how much food insecurity has pressed onto the population of Yuba County, especially in this time of illness and uncertainty.  
+
+It doesn't need to be said that the pandemic has made everyone suffer. Complaints about vaccines and mandatory masks aside, there was so much loss during the high times of COVID-19. Many people lost their lives, many businesses had to close (temporarily, many hoped), many public facilities and entertainment spots like libraries, museums, and gyms all shutting their doors, forcing the populace into their homes, provided they had one. But it was only during this time, that the people of the United States were truly exposed to the troubles of food insecurity. 
+
+Just imagine not being able to put enough food on the dinner table, having to ration out what little resources you have, or simply going hungry for the night; the inability to gain the nutrition and nourishment needed to live day by day. Ever since the Great Recession from 2008, the percentage of the population that suffered from food insecurity has lessened every year. In 2019, they were at an all-time low! Come that pandemic, and we see levels that match the rates the Great Recession had pulled in. Having analyzed the Census Household Pulse Survey, Northwestern University estimated roughly 23% of the total population of the United States suffered from food insecurity at the peak of the pandemic, over one fifth of the total population! Compared to 2019, many states in the nation had over double the previous food insecurity rate. 
+
+![Food insecurity rate in Sacramento has been decreasing ever since the Great Recession.](/../food insecurity - blog post_files/Sacramento Food Percentage.jpg)
+Find the data here. 
+
+Yes, more and more attempts to curb the need for food were taken over the past decade to lower the food insecurity percentage. The USDA in 2019 alone utilized $92.4 billion to fund its 15 food nutrition assistance programs like the Supplemental Nutrition Assistance Program (or SNAP) and the Special Supplemental Nutrition Program for Women, Infants, and Children (or WIC), among others like the National School Lunch Program. The USDA has no doubt kicked into overdrive to provide for a massive population reeling from a worldwide pandemic, but its clear that "normalcy", or what we had before the pandemic, will take a long time to accomplish. Even as the pandemic begins to lessen, the recent Delta variant would no doubt lead into another surge, keeping up the larger rate of food insecurity that has since become the norm since the pandemic's beginnings. 
+
+Even as I work at that food pantry in Marysville every Friday, one pantry out of many within the area, I wonder that there surely can be more that we could do than just hand out food, offering a temporary but certainly helpful food solution to the people that come to us in need. Food stamps and assistance from the government are certainly helpful, but to me, they are only lying a thick band-aid on the problem at hand. The problem won't go away immediately; though we take care of one worry in their lives, its not like the pandemic would give those in need the option to turn their life around, to leave the need of food stamps and food pantries. Surely there are other ways to tackle this issue. 
+
+And it requires our voice. 
+
+
+## Talking about the data
+Find the data here
+
+Online and off, you can read and hear complaints about the bureaucracy, whether it be on the local level or the national level. That, or the governments that make our laws aren't at the forefront of our minds in our daily lives. Fair enough. But donating to the nearest church so it may help the homeless is only a meager stopgap in how we could truly approach this issue that will, no doubt, rise concerns for food insecure individuals, though it's to the point where the virus itself is a non-issue.  
+
+I mean this in relation to the data. There is no doubt that the pandemic has wrecked everyone on some level, where it be minor inconvenience to life-changing for the worse. But the aftermaths of such a pandemic do not simply exist as if the pandemic was never there. COVID will leave its mark on today's society and future generations' as well, even after the restrictions lift and herd immunity is achieved. Other than easily obtainable data only reaching 2019, it's clear to have the virus as a control. Without the virus's influence, if we can figure out other ways to tackle food insecurity, that should, in theory, help society overall. 
+
+While seemingly obvious, the more food pantries that are present, the lower the food insecurity rate seems to be overall. That said, even at around 50 pantries in a single county, food insecurity rates can fluctuate drastically from county to county. Food pantries are a stopgap, true, but unless you want to fill up a county with over a hundred of them, a new idea should be approached. 
+
+![More pantries do mean less food insecurity, but...](/../food insecurity - blog post_files/pantry plot.jpg)
+
+Exploring the data, as it turns out, the higher the average cost for a meal is, the lower the food insecurity rate. While it seems odd at the outset, there are a couple of ways to look at this. First, many of the denser counties that have bigger cities would have higher meal costs. These counties would also therefore have more and more accessible resources to support the food insecure. As well, if the cost is connected to balanced nutrition (as it is often wont to be), then these denser areas would most likely have more access to nutritious food. There is a need to provide that food aid can only go so far as to help, especially since stamps focus on consumable food and not much else. 
+
+![Higher costs for food mean lower food insecurity](/../food insecurity - blog post_files/Meal cost data.jpg)
+
+So what can be targeted to change or bring focus to? 
+
+
+## The Results
+Find the data here
+
+The data results in a number of different ideas to look into to help curb food insecurity in the long run. The main significant feature to look at is the percentage of the population in poverty that use public transportation. If there is a 1 unit increase in the percentage of this population, there would be an average 12% increase in the food insecurity percentage. Now, of course if someone were to have a personal car, they would most likely be more less money-stricken. But, it could also be said that with more of these poverty-stricken people paying for public transportation, they are struggling rationing money for their groceries as well. The pandemic could potentially lead to more digital forms of payment, but those in poverty would, most likely, struggle to obtain a credit card for this type of payment, and would not have as much money in the bank or some other third party application like PayPal for alternative ways of payment. 
+
+If public transportation laws were edited to be more user-friendly in a way to lower the cost to the users, it would help alleviate the food insecurity problem that less-wealthy people experience. 
+
+Looking at schooling, having your highest level of education being a Bachelor's Degree helps lower the food insecurity rate. This seems obvious, but then you look at the other features and a pattern emerges. While not as significant, if more people has a maximum education of either a high school graduate or took just some college, the insecurity rate would increase, a rough 0.01% and 1.3% increase, respectively. While not much, there is a clear indication that education is important. Despite the pandemic, University of California campuses have been aiming to raise tuition costs every year to combat decreasing state support for the UC system. And while lower-income students can easily apply for financial aid, that doesn't necessarily mean that they will be well-off for everything else they would have to deal with during their education. This is besides the idea that these lower income families, afraid of the high tuition or the potentially ensuing debt, would be averse to going for higher education. 
+
+Being capable of getting a better education for a job that pays more than minimum wage feels like an inevitability for many people, but not everyone has the funds or knowledge to do it. While the tuition hike would partly be cycled back into financial aid, the pandemic and its affects on many people in poverty may make the potential gains as a result not able to make up for the current loss. Education laws are in need of some more changes, to allow more people to get the education they seek. 
+
+## Conclusions
+
+I am not trying to bash the USDA and everything they have done. Quite the contrary: they have done much to curb food insecurity in pre-pandemic years. But I believe that you can only inject so much money into those programs and rely on them to take care of business. If we want to keep food insecurity on the low end, we should ask our lawmakers to tackle other problematic issues that only make food insecurity worse.
+
+From more public transportation to more accessible schooling, simply tackling the issue directly can only go so far. Helping alleviate other issues in society and people's daily lives will indirectly help them with their food issues. 
+
+All that said, my analysis was not perfect. The pantry data that I scraped together is far from accurate, since there exists no full compilation of all pantry data in California. As well, many of the features used could be tied to a form of leakage. The percentage/number of people whose highest education level was below high school graduate can be connected to kids specifically, which may connect to thier parents as well. On top of this, due to the pandemic, I have been unable to get any concrete amount of data from 2020 and 2021, forcing me to utilize 2019 data. While it's not too big of an issue, it would be nice to work with more current data. 
+
+That said, I think there are multiple roads to take to tackle this problem. The main idea is this: while governmental food aid does indeed help, tackling other sectors of society like transportation and schooling would help curb food insecurity in the long run, or at the very least, ensure that a world-shaking event like a pandemic doesn't undo nearly a decade's worth of effort to make sure everyone can eat at night. 
+
+And though I love helping people by giving them the food they need for the week, even asking that more may come for help, deep down I know that the less people that come to the pantry, the better. 
+
+# References
+
+"Food Security and Nutrition Assistance". Economic Research Service. U.S. Department of Agriculture. https://www.ers.usda.gov/data-products/ag-and-food-statistics-charting-the-essentials/food-security-and-nutrition-assistance/. 
+
+Feeding America Data 
+Gundersen, C., Strayer, M., Dewey, A., Hake, M., & Engelhard, E. (2021). Map the Meal Gap 2021: An Analysis of County and Congressional District Food Insecurity and County Food Cost in the United States in 2019. Feeding America. 
+
+Hribernik, Ursa. (2020, May 5), The future of payments in public transport. LIT Transit. https://lit-transit.com/insights/the-future-of-payments-in-public-transport/. 
+
+Sylva, Christianna. "Food Insecurity in the U.S. By The Numbers." NPR. 27 September 2020. https://www.npr.org/2020/09/27/912486921/food-insecurity-in-the-u-s-by-the-numbers. 
+
+Zinshteyn, Mikhail. "UC tuition hike: Regents to vote on 'forever' increase." CalMatters. 19 July 2021. https://calmatters.org/education/higher-education/2021/07/uc-tuition-hike/. 
+

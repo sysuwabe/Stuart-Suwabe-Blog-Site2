@@ -165,8 +165,3 @@ F-statistic:"
 "
 "1","
 "
-"0","library(modelr)"
-"0","rmse(m2, foodincaNum1) "
-"2","Error in UseMethod(""rmse"") : 
-  no applicable method for 'rmse' applied to an object of class ""c('train', 'train.formula')""
-"

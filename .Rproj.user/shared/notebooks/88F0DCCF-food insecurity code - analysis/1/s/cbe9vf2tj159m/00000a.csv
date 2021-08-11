@@ -1,0 +1,2 @@
+"0","food_results1 <- bind_cols(food_pred, percen_te %>% select(l_insecure_percen))"
+"0","food_results1"

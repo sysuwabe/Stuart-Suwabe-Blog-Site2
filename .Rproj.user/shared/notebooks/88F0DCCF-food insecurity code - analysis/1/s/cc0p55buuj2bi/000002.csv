@@ -1,4 +1,0 @@
-"0","food_pred <- predict(food_model_st_fit2, num_te)"
-"0",""
-"0","food_results2 <- bind_cols(food_pred, num_te %>% select(l_insecure_num))"
-"0","head(food_results2)"

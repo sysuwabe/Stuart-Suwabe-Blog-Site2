@@ -1,1 +1,0 @@
-"0","LAfoodin %>% ggplot(aes(year,secure_meal_value)) + geom_point() + ggtitle(""Food Insecurity Percentage Decreasing Over Time in Los Angeles County"") + xlab(""year over time"") + ylab(""food insecurity percentage"")"

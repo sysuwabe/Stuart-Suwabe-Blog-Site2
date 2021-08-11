@@ -1,0 +1,3 @@
+"0","test <- percen_tr %>% filter(PubTransPov <= 0.005)"
+"0",""
+"0","ggplot(test, aes(PubTransPov, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm')"
