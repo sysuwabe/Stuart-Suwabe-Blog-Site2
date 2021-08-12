@@ -1,0 +1,1 @@
+"0","foodincaPercen %>% ggplot(aes(secure_meal_value, insecure_percen)) + geom_point() + ggtitle(""the higher the meal cost, the lower the insecurity rate"")"

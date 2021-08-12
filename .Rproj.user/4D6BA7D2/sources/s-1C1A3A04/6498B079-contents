@@ -255,8 +255,9 @@ The only significant features are FoodAssist and secure_meal_value. It seems Edu
 
 ## Looking at some of the features...
 ```{r}
-ggplot(percen_tr, aes(FoodAssist, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm')
+ggplot(percen_tr, aes(FoodAssist, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm') + ggtitle("Food Assistance isn't the most helpful...")
 ```
+The more people that rely on food assistance, the higher the insecurity rate. The people may not be pushed to better themselves, or may not be able to better themselves, while relying on food aid. 
 
 
 ```{r}
@@ -273,7 +274,7 @@ There is a drop in the percentage with more people taking public transportation.
 
 
 ```{r}
-ggplot(percen_tr, aes(EduHSGrad, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm')
+ggplot(percen_tr, aes(EduSomeCol, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm') + ggtitle("Some college education can't do it alone.") 
 ```
 
 The higher percentage of the population whose max level of education is graduating high school, the higher the insecurity rate. Seems obvious, but it's got its point: a higher education means less food insecurity. 

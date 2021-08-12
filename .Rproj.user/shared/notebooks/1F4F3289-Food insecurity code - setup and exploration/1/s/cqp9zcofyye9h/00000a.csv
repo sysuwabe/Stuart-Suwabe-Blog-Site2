@@ -1,0 +1,1 @@
+"0","foodincaPercen %>% ggplot(aes(log(insecure_percen))) + geom_histogram(bins = 20)"

@@ -108,13 +108,13 @@ Now I can compare data.
 Looking at pantry data, there is an obvious telling that higher pantry numbers have lower percentages of food insecurity. Even with the raw way I scraped up the pantry data, the results remain logical. The outlier at 190 counties is Ventura County, with the second largest at 111 pantries is San Bernadino County. 
 
 ```{r}
-foodincaPercen %>% ggplot(aes(insecure_percen, pantry_num)) + geom_point() + ggtitle("More food pantries mean a lower insecurity rate")
+foodincaPercen %>% ggplot(aes(pantry_num, insecure_percen)) + geom_point() + ggtitle("More food pantries mean a lower insecurity rate")
 ```
 
 Looking at the average amount of money it costs for a single meal, surprisingly enough, the higher the cost, the lower the food insecurity rate. You would expect it the other way around, but logically speaking, a county with a higher meal cost would probably be larger or have larger cities, with more resources to deal with food insecure individuals than smaller counties. Then, higher costs would account for more nutrition within a meal. 
 
 ```{r}
-foodincaPercen %>% ggplot(aes(insecure_percen, secure_meal_value)) + geom_point() + ggtitle("the higher the meal cost, the lower the insecurity rate")
+foodincaPercen %>% ggplot(aes(secure_meal_value, insecure_percen)) + geom_point() + ggtitle("the higher the meal cost, the lower the insecurity rate")
 ```
 
 This was an interesting move. In simple terms, we have the minimum budget the government could use to allocate food for the county. While higher budgets generally mean lower food insecurity percentages, there is one massive outlier, with a budget of 640 million! This county is actually Los Angeles county. I'll have to keep an eye on this one. 
@@ -161,7 +161,7 @@ Yeah... especially for numeric data set, the frequency is skewed towards the lef
 
 
 ```{r}
-foodincaPercen %>% ggplot(aes(log(insecure_percen))) + geom_histogram(bins = 25)
+foodincaPercen %>% ggplot(aes(log(insecure_percen))) + geom_histogram(bins = 20)
 ```
 
 ```{r}

@@ -1,1 +1,0 @@
-"0","ggplot(percen_tr, aes(EduBach, l_insecure_percen)) + geom_point() + geom_smooth(method = 'lm')"

@@ -1,1 +1,0 @@
-"0","foodincaPercen %>% ggplot(aes(insecure_percen, pantry_num)) + geom_point() + ggtitle(""More food pantries mean a lower insecurity rate"")"
